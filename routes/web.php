@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NavigaitionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [NavigaitionController::class , "welcome"] )->name('welcome');
+Route::get('/login', [NavigaitionController::class , "login"] )->name('login');
+Route::get('/signup', [NavigaitionController::class , "signup"] )->name('signup');
