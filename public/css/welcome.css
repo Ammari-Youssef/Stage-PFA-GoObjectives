@@ -1,197 +1,107 @@
-  .bd {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      ;
-      /* direction: rtl; */
-  }
+:root{
+    --dark : black;
+    --bs-white: #F8F9FA;
+}
+body{
+    /* height: 5000px; */
+}
+/* navbar */
+.navbar-nav li.nav-item a.nav-link:hover {
+ color: rgb(13, 70, 225);
+}
 
-  
+/* .dropdown-menu.language-dropdown {
+    width: 15px;
+} */
+.language-dropdown {
+    max-width: 200px;
+    /* Adjust the maximum width as needed */
+}
+/* end navbar */
 
-  .logo {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-  }
+/* landing section  */
+.landing-section{
+    background-color:  var(--bs-white);
+    padding: 60px;
+    min-height: 600px;
+    height: 600px;
 
-  .statement {
-      position: absolute;
-      bottom: 0;
-      left: 20px;
-      color: #fff;
-      font-size: 18px;
-  }
-
-  .translation {
-      position: absolute;
-      bottom: 0;
-      right: 20px;
-      color: #fff;
-      font-size: 18px;
-  }
-
-  .main-content {
-      padding: 20px;
-  }
-
-  .fields {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: flex-start;
-      /* Adjust alignment as needed */
-      padding: 20px 0;
-  }
-
-  .field {
-      width: calc(25% - 10px);
-      /* Divide the width equally for four fields */
-      /* background-color: blue; */
-      color: black;
-      padding: 20px;
-      margin-bottom: 20px;
-      border: #000 solid;
-      background-color: #fff;
-  }
-
-  .field-name {
-      font-weight: bold;
-  }
-
-  .field-name-arabic {
-      font-weight: bold;
-      text-align: right;
-  }
-
-  .footer {
-      text-align: right;
-      padding: 20px;
-      font-weight: bold;
-  }
-
-  .language-buttons {
-      text-align: center;
-      padding: 20px;
-  }
-
-  .language-buttons button {
-      margin: 0 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      background-color: #ffffff;
-      color: #333333;
-      border-radius: 10px;
-      /* Adding border radius */
-      box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.2);
-      /* Adding shadow */
-      cursor: pointer;
-  }
-
-  .language-buttons button:hover {
-      background-color: #f5f5f5;
-  }
+    
+}
 
 
 
-  .social-icons {
-      text-align: center;
-      padding: 20px;
-  }
+/* end landing section  */
 
-  .social-icons a {
-      margin: 0 10px;
-      text-decoration: none;
-      color: #333;
-      font-size: 24px;
-      /* Adjust the icon size as needed */
-  }
+/* Features section  */
+.main-title::after{
+    content: '';
+    width: 120px;
+    height: 2px;
+    background-color: black;
+    position: absolute;
+    bottom: -20;
+    left: 50%;
+    transform: translateX(-50%);
 
-  .p-right {
-      text-align: right;
-  }
+}
 
-  .cards {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      /* background-color: #000000; */
-      /* direction: rtl; */
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-      /* Start from the left */
-      align-items: flex-start;
-  }
+.features-section .icon-holder {
+    height: 100px;
+}
+.features-section .icon-holder svg {
+    left: 50%;
+    /* transform: translateX(-50%); */
+    
+}
+.features-section .icon-holder .number {
+    color: var(--dark);
+    font-size: 2rem;
+}
+.features-section .icon-holder .icon {
+    /* color: red; */
+}
+/* end features section  */
 
-  .card {
-      width: calc(25% - 20px);
-      /* 4 cards per row */
-      background-color: #ffffff;
-      border-radius: 10px;
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-      margin: 10px;
-      padding: 20px;
-      box-sizing: border-box;
-  }
+/* Why us  */
+.page-section{
+        font: normal 18px/1.5625 "Soleil", Arial, "Helvetica Neue", sans-serif;
+            font-weight: 300;
+            color: #444;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            outline-color: rgba(0, 0, 0, 0);
+            font-size: 100%;
+            vertical-align: baseline;
+            display: block;
+            background: #eef2f3;
+}
+/* why us end  */
+/* Footer */
+footer{
+    height: 100%;
+}
 
-  .card-icon {
-      font-size: 24px;
-      color: #333333;
-      margin-right: 10px;
-  }
+.contacts ul svg{
+height: 200px;
+width: 20px;
+font-size: 20px;
 
-  .card-title {
-      font-size: 18px;
-      font-weight: bold;
-  }
+}
 
-  .card-title-ar {
-      font-size: 18px;
-      font-weight: bold;
+.linkedin{
+    color: #0a66c2;
+}
+.instagram{
+    color: #e1306c;
+}
+.facebook{
+    color: #1877f2;
+}
+ .twitter{
+       color: #1da1f2;
+}
+    /* end footer */
 
-      margin-top: 10px;
-      text-align: right;
-  }
-
-  body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-  }
-
-  .landing-section {
-      text-align: center;
-      padding: 100px 0;
-      /* Adjust as needed for spacing */
-      position: relative;
-      background-color: #f7f7f7;
-      /* Set your desired background color */
-  }
-
-  .icon {
-      position: absolute;
-      top: 20px;
-      /* Adjust to position the icon */
-      right: 20px;
-      /* Adjust to position the icon */
-      font-size: 24px;
-      color: #333;
-  }
-
-  .statement {
-      font-size: 24px;
-      color: #333;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-  }
-
-  .translation {
-      font-size: 20px;
-      color: #777;
-      margin-top: 10px;
-  }
-
-   

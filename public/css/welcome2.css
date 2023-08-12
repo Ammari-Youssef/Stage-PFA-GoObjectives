@@ -1,0 +1,197 @@
+  .bd {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      ;
+      /* direction: rtl; */
+  }
+
+  
+
+  .logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+  }
+
+  .statement {
+      position: absolute;
+      bottom: 0;
+      left: 20px;
+      color: #fff;
+      font-size: 18px;
+  }
+
+  .translation {
+      position: absolute;
+      bottom: 0;
+      right: 20px;
+      color: #fff;
+      font-size: 18px;
+  }
+
+  .main-content {
+      padding: 20px;
+  }
+
+  .fields {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      /* Adjust alignment as needed */
+      padding: 20px 0;
+  }
+
+  .field {
+      width: calc(25% - 10px);
+      /* Divide the width equally for four fields */
+      /* background-color: blue; */
+      color: black;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: #000 solid;
+      background-color: #fff;
+  }
+
+  .field-name {
+      font-weight: bold;
+  }
+
+  .field-name-arabic {
+      font-weight: bold;
+      text-align: right;
+  }
+
+  .footer {
+      text-align: right;
+      padding: 20px;
+      font-weight: bold;
+  }
+
+  .language-buttons {
+      text-align: center;
+      padding: 20px;
+  }
+
+  .language-buttons button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background-color: #ffffff;
+      color: #333333;
+      border-radius: 10px;
+      /* Adding border radius */
+      box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.2);
+      /* Adding shadow */
+      cursor: pointer;
+  }
+
+  .language-buttons button:hover {
+      background-color: #f5f5f5;
+  }
+
+
+
+  .social-icons {
+      text-align: center;
+      padding: 20px;
+  }
+
+  .social-icons a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #333;
+      font-size: 24px;
+      /* Adjust the icon size as needed */
+  }
+
+  .p-right {
+      text-align: right;
+  }
+
+  .cards {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      /* background-color: #000000; */
+      /* direction: rtl; */
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      /* Start from the left */
+      align-items: flex-start;
+  }
+
+  .card {
+      width: calc(25% - 20px);
+      /* 4 cards per row */
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      margin: 10px;
+      padding: 20px;
+      box-sizing: border-box;
+  }
+
+  .card-icon {
+      font-size: 24px;
+      color: #333333;
+      margin-right: 10px;
+  }
+
+  .card-title {
+      font-size: 18px;
+      font-weight: bold;
+  }
+
+  .card-title-ar {
+      font-size: 18px;
+      font-weight: bold;
+
+      margin-top: 10px;
+      text-align: right;
+  }
+
+  body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+  }
+
+  .landing-section {
+      text-align: center;
+      padding: 100px 0;
+      /* Adjust as needed for spacing */
+      position: relative;
+      background-color: #f7f7f7;
+      /* Set your desired background color */
+  }
+
+  .icon {
+      position: absolute;
+      top: 20px;
+      /* Adjust to position the icon */
+      right: 20px;
+      /* Adjust to position the icon */
+      font-size: 24px;
+      color: #333;
+  }
+
+  .statement {
+      font-size: 24px;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+  }
+
+  .translation {
+      font-size: 20px;
+      color: #777;
+      margin-top: 10px;
+  }
+
+   
