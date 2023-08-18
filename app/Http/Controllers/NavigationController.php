@@ -22,17 +22,7 @@ class NavigationController extends Controller
     public function home(){
         return view('home');
     }
-    public function test(){
-        $ppl= [
-            ["name"=>"ysf","height"=>"175", "age"=>"22"],
-            ["name"=>"rcd","height"=>"185","age"=> "20"],
-            ["name"=>"ch","height"=>"165", "age"=>"17"],
-        ];
-        $data=["22","laravel",'zozo'];
-        return view('test',compact('ppl' , 'data'));
-
-    
-    }
+   
 
     
 }

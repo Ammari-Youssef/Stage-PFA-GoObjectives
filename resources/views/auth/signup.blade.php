@@ -84,7 +84,14 @@
                                     <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                                     {{ __('Password') }}
                                 </label>
-                                <input type="password" id="password" name="password" class="form-control" />
+                                <input type="password" id="password" name="password" class="form-control @error('password') is-invalid @enderror"
+                                    value="{{ old('password') }}" />
+
+                                @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
 
                             <div class="mb-4">
@@ -92,7 +99,7 @@
                                     <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                                     {{ __('Repeat your password') }}
                                 </label>
-                                <input type="password" id="passwordConfirmation" name="firstname" class="form-control" />
+                                <input type="password" id="passwordConfirmation" name="password_confirmation" class="form-control" />
                             </div>
 
                             <div class="form-check d-flex justify-content-center mb-5">

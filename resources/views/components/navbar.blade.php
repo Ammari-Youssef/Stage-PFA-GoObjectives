@@ -31,8 +31,8 @@
                         {{ \Illuminate\Support\facades\Auth::user()->username }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                        <li><a class="dropdown-item" href="#">{{ __('My Profile') }}</a></li>
-                        <li><a class="dropdown-item" href="#">{{ __('Settings') }}</a></li>
+                        <li><a class="dropdown-item" href="{{route('profile.show')}}">{{ __('My Profile') }}</a></li>
+                       
                         <li>
                             <hr class="dropdown-divider">
                         </li>
