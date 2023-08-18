@@ -28,53 +28,7 @@
 
 <body class="antialiased">
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-        <a class="navbar-brand px-5" href="#">
-            GoObjective
-        </a>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto mb-2 mb-lg-0 navbar-center">
-                <!-- Navigation Links -->
-                <li class="nav-item active">
-                    <a class="nav-link p-lg-3" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link p-lg-3" href="#aboutus">About Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link p-lg-3" href="#features">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link p-lg-3" href="#followus">Follow us</a>
-                </li>
-            </ul>
-
-            <ul class="nav navbar-nav ms-auto navbar-right">
-                <li class="nav-item"><a class="p-3" href="#"><i class="fas fa-user"></i> Sign Up</a></li>
-                <li class="nav-item"><a class="p-3" href="#"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-
-            </ul>
-            <ul class=" navbar-right">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-language"></i> </a>
-                    <div class="dropdown-menu " aria-labelledby="languageDropdown">
-                        <a class="dropdown-item" href="#">English</a>
-                        <a class="dropdown-item" href="#">Arabic</a>
-                    </div>
-                </li>
-            </ul>
-
-
-
-
-        </div>
-    </nav>
+   @include('partials.navbar')
 
 
     <section class="landing-section d-flex justify-content-center align-items-center text-center px-5">
@@ -82,7 +36,7 @@
             <h1 class="display-4">Welcome to GoObjective</h1>
             <p class="lead">Your Success Is Our Aim.</p>
             <p class="lead">Determination is what you need to achieve it .</p>
-            <a href="#" class="btn btn-primary btn-lg rounded-pill main-btn mt-2">Get started</a>
+            <a href="{{route('auth.signup')}}" class="btn btn-primary btn-lg rounded-pill main-btn mt-2">Get started</a>
         </div>
     </section>
 
@@ -275,37 +229,7 @@
 
 
 
-    <footer id="followus" class="bg-light text-center py-4 lh-lg">
-        <div class="container">
-            <div class="row">
-                <!-- <div class="col-md-6">
-                    <h3>Contact Us</h3>
-                    <p>Email: contact@example.com</p>
-                    <p>Phone: +123456789</p>
-                </div> -->
-                <div class="col-md-12">
-                    <h3>Follow Us</h3>
-                    <ul class="d-flex justify-content-center fs- mt-5 list-unstyled gap-5 contacts">
-
-                        <li> <a href="https://facebook.com/goobjective"><i class="fab fa-facebook facebook"></i></a></li>
-                        <li> <a href="https://twitter.com/goobjective"><i class="fab fa-twitter twitter  "></i></a></li>
-                        <li> <a href="https://instagram.com/goobjective"><i class="fab fa-instagram instagram"></i></a></li>
-                        <li> <a href="https://linkedin.com/in/goobjective"><i class="fab fa-linkedin linkedin"></i></a></li>
-
-                    </ul>
-                    <p class="text-center">&copy; 2023 GoObjective.com 2023</p>
-                    <p class="text-center"> All rights reserved </p>
-                </div>
-            </div>
-        </div>
-
-
-
-
-
-
-
-    </footer>
+    @include('partials.footer')
 
 </body>
 

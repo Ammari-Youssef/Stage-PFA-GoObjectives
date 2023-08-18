@@ -20,4 +20,9 @@ class Objective extends Model
     {
         return $this->belongsTo(User::class, 'UserID');
     }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'ObjectiveID');
+    }
 }
