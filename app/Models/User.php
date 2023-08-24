@@ -49,4 +49,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Objective::class, 'UserID');
     }
+
+    public function progress()
+    {
+        return $this->hasOne(Progress::class);
+    }
 }

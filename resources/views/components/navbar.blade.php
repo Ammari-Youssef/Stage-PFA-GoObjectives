@@ -9,7 +9,7 @@
         <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
             <ul class="navbar-nav">
                 <li class="nav-item justify-content-center">
-                    <a class="nav-link{{ request()->is('/') ? ' active' : '' }}" href="/">{{ __('Home') }}</a>
+                    <a class="nav-link{{ request()->is('/') ? ' active' : '' }}" href="/">{{ __('Dashboard') }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link{{ request()->is('task-list') ? ' active' : '' }}"

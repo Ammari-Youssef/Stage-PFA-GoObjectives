@@ -14,17 +14,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call(
-        //     ObjectiveSeeder::class,
-        // );
+        $this->call([
+            ObjectiveSeeder::class,
+            ProgressSeeder::class,
+            TaskSeeder::class,
+            
+        ]);
         \App\Models\User::factory(5)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'firstname' => 'Youssef',
-        //     'lastname' => 'Ammari',
-        //     'username' => 'admin',
-        //     'email' => 'admin@example.com',
-        //     'password' => '12345',
-        // ]);
+        \App\Models\User::factory()->create([
+            'firstname' => 'Youssef',
+            'lastname' => 'Ammari',
+            'username' => 'admin',
+            'email' => 'admin@example.com',
+            'password' => '12345678',
+        ]);
     }
 }

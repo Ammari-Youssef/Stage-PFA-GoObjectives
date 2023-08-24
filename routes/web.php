@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\NavigationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,4 +38,7 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Route::get('/home', [HomeController::class, 'index'])->name('homepage')->middleware('auth');
+Route::get('/dashboard', [HomeController::class, 'index'])->name('homepage')->middleware('auth');
+
+Route::resource('/task' , TaskController::class) ; 
+Route::resource('/objective' , ObjectiveController::class) ; 

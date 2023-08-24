@@ -55,7 +55,8 @@ class ObjectiveFactory extends Factory
             'isDone' => $this->faker->boolean,
             'ExpectedResult' => $expectedResult,
             'Type' => $type,
-            'DateDebut' => $this->faker->date,
+            'DateStart' => $this->faker->date,
+            'DateDeadline' => $this->faker->date,
             'Importance' => $importance,
             'Planning' => $this->faker->sentence,
             'PlanningType' => $planningType,
@@ -64,6 +65,5 @@ class ObjectiveFactory extends Factory
             'DureeEstimee' => $this->faker->randomFloat(2, 1, 100),
             'UserID' => \App\Models\User::factory()->create()->id,
         ];
-        
     }
 }

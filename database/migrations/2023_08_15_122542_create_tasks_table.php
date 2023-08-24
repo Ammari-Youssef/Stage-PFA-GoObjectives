@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('ObjectiveID');
             $table->string('TaskTitle');
             $table->text('TaskDescription');
             $table->text('TaskDate');
-            $table->unsignedBigInteger('ObjectiveID');
-            $table->foreign('ObjectiveID')->references('id')->on('objectives')->cascadeOnDelete()->cascadeOnUpdate;
             $table->timestamps();
+            
+             // Define foreign key relationship
+            $table->foreign('ObjectiveID')->references('id')->on('objectives')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

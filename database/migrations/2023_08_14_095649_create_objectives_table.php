@@ -19,7 +19,8 @@ return new class extends Migration
             $table->boolean('isDone');
             $table->boolean('ExpectedResult');
             $table->string('Type');
-            $table->date('DateDebut');
+            $table->date('DateStart');
+            $table->date('DateDeadline');
             $table->integer('Importance');
             $table->string('Planning');
             $table->string('PlanningType', 50);
