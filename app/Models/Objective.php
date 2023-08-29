@@ -25,4 +25,19 @@ class Objective extends Model
     {
         return $this->hasMany(Task::class, 'ObjectiveID');
     }
+
+    public function levels()
+    {
+        return $this->hasMany(Level::class);
+    }
+
+    public function Motives()
+    {
+        return $this->hasMany(Motive::class);
+    }
+    
+    public function Results()
+    {
+        return $this->hasMany(Result::class);
+    }
 }

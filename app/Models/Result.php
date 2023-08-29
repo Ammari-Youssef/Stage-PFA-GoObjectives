@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Result extends Model
 {
     use HasFactory;
+
+    public function objective()
+    {
+        return $this->belongsTo(Objective::class);
+    }
 }
