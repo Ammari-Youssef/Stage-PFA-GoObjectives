@@ -18,15 +18,25 @@ class DatabaseSeeder extends Seeder
             ObjectiveSeeder::class,
             ProgressSeeder::class,
             TaskSeeder::class,
-            
-        ]);
-        \App\Models\User::factory(5)->create();
+            LevelSeeder::class,
+            ResultSeeder::class,
+            MotiveSeeder::class,
 
+        ]);
+        // \App\Models\User::factory(5)->create();
+
+        // \App\Models\User::factory()->create([
+        //     'firstname' => 'Youssef',
+        //     'lastname' => 'Ammari',
+        //     'username' => 'admin',
+        //     'email' => 'admin@example.com',
+        //     'password' => '12345678',
+        // ]);
         \App\Models\User::factory()->create([
-            'firstname' => 'Youssef',
-            'lastname' => 'Ammari',
-            'username' => 'admin',
-            'email' => 'admin@example.com',
+            'firstname' => 'Skalapa',
+            'lastname' => 'Baroni',
+            'username' => 'Skalapa Baroni',
+            'email' => 'sklapa@example.com',
             'password' => '12345678',
         ]);
     }

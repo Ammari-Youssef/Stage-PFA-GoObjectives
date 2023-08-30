@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-
+use App\Models\Objective;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Motive>
  */
@@ -18,6 +18,13 @@ class MotiveFactory extends Factory
     {
         return [
             //
+            'ObjectiveID' => Objective::factory(),
+            'MotiveType' => $this->faker,
+            'MotiveTitle' =>
+            $this->faker->sentence,
+            'MotiveDescription' =>
+            $this->faker->paragraph,
+           
         ];
     }
 }

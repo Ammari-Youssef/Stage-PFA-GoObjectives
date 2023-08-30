@@ -40,7 +40,7 @@ class TaskFactory extends Factory
 
         $objectiveTitle = $titlePattern . ' ' . $this->faker->randomNumber(1);
 
-        $types = ['number', 'time', 'an essential purpose', 'logic'];
+        $types = ['number', 'time', 'essential ', 'logic'];
         $type = $this->faker->randomElement($types);
 
         $expectedResults = [true, false];
@@ -56,6 +56,7 @@ class TaskFactory extends Factory
             'TaskTitle' => $objectiveTitle . ' Task',
             'TaskDescription' => $this->faker->paragraph,
             'TaskDate' => $this->faker->date(),
+            'isDone' => $this->faker->boolean,
         ];
     }
 }

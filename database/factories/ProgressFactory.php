@@ -17,16 +17,19 @@ class ProgressFactory extends Factory
     public function definition(): array
     {
         return [
-            'health_fitness' => $this->faker->randomFloat(2, 0, 100),
-            'relationships' => $this->faker->randomFloat(2, 0, 100),
-            'spirituality' => $this->faker->randomFloat(2, 0, 100),
-            'environment' => $this->faker->randomFloat(2, 0, 100),
-            'free_time' => $this->faker->randomFloat(2, 0, 100),
-            'work_business' => $this->faker->randomFloat(2, 0, 100),
-            'feelings' => $this->faker->randomFloat(2, 0, 100),
-            'money_finance' => $this->faker->randomFloat(2, 0, 100),
+            'health_fitness' => $this->faker->randomFloat(2, 0, 10),
+            'relationships' => $this->faker->randomFloat(2, 0, 10),
+            'spirituality' => $this->faker->randomFloat(2, 0, 10),
+            'environment' => $this->faker->randomFloat(2, 0, 10),
+            'free_time' => $this->faker->randomFloat(2, 0, 10),
+            'work_business' => $this->faker->randomFloat(2, 0, 10),
+            'feelings' => $this->faker->randomFloat(2, 0, 10),
+            'money_finance' => $this->faker->randomFloat(2, 0, 10),
             'UserID' => function () {
                 return \App\Models\User::factory()->create()->id;
+            },
+            'CategoryID' => function () {
+                return \App\Models\Category::factory()->create()->id;
             },
         ];
     }

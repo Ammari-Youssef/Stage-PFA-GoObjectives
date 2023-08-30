@@ -37,7 +37,7 @@ class ObjectiveFactory extends Factory
 
         $objectiveTitle = $titlePattern . ' ' . $this->faker->randomNumber(1);
 
-        $types = ['number', 'time', 'an essential purpose', 'logic'];
+        $types = ['number', 'time', 'essential', 'logic'];
         $type = $this->faker->randomElement($types);
 
         $expectedResults = [true, false];
