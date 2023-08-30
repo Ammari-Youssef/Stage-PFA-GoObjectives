@@ -9,30 +9,36 @@
         <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
             <ul class="navbar-nav">
                 <li class="nav-item justify-content-center">
-                    <a class="nav-link{{ request()->is('/') ? ' active' : '' }}" href="/">{{ __('Dashboard') }}</a>
+                    <a class="nav-link{{ request()->is('/') ? ' active' : '' }}"
+                        href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link{{ request()->is('task-list') ? ' active' : '' }}"
-                        href="/task-list">{{ __('Task List') }}</a>
+                    <a class="nav-link{{ request()->is('task') ? ' active' : '' }}"
+                        href="{{ route('task.index') }}">{{ __('Task List') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link{{ request()->is('objectives') ? ' active' : '' }}"
-                        href="/objectives">{{ __('Objectives') }}</a>
+                    <a class="nav-link{{ request()->is('objective') ? ' active' : '' }}"
+                        href="{{ route('objective.index') }}">{{ __('Objectives') }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link{{ request()->is('progress') ? ' active' : '' }}"
-                        href="/progress">{{ __('Progress') }}</a>
+                        href="{{ route('progress.index') }}">{{ __('Progress') }}</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ \Illuminate\Support\facades\Auth::user()->username }}
+                        @if (\Illuminate\Support\Facades\Auth::check())
+                            {{ \Illuminate\Support\Facades\Auth::user()->username }}
+                        @else
+                            <a href="{{ route('login') }}">Login</a>
+                        @endif
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                        <li><a class="dropdown-item" href="{{route('profile.show')}}">{{ __('My Profile') }}</a></li>
-                       
+                        <li><a class="dropdown-item" href="{{ route('profile.show') }}">{{ __('My Profile') }}</a>
+                        </li>
+
                         <li>
                             <hr class="dropdown-divider">
                         </li>

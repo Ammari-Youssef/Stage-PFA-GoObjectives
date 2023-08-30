@@ -1,5 +1,5 @@
  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-        <a class="navbar-brand px-5" href="{{route('homepage')}}">
+        <a class="navbar-brand px-5" href="{{route('dashboard')}}">
             GoObjective
         </a>
 

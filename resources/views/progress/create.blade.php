@@ -20,13 +20,13 @@
                             @csrf
                             @foreach ($categories as $category)
                                 <div class="mb-3">
-                                    <label for="{{ $category }}">{{ $category }}</label>
+                                    <label for="{{ $category->id }}">{{ $category->name }}</label>
                                     <div class="text-center">
-                                        <span id="{{ $category }}Value">0</span>
+                                        <span id="{{ $category->id }}Value">0</span>
                                     </div>
                                     <input type="range" class="form-range" min="0" max="10"
-                                        step="0.1" id="{{ $category }}"
-                                        name="{{ strtolower(str_replace(' & ', '_', $category)) }}" required>
+                                        step="0.1" id="{{ $category->id }}"
+                                        name="category {{$category->id}}" required>
                                 </div>
                             @endforeach
                             <button type="submit" class="btn btn-primary">Submit</button>

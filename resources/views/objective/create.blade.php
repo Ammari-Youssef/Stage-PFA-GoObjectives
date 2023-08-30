@@ -42,11 +42,12 @@
                                 <select class="form-select" id="category" name="Category" required>
                                     <option value="" disabled selected>{{ __('Select a category') }}</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category }}"
-                                            {{ old('Category') === $category ? 'selected' : '' }}>
-                                            {{ $category }}
-                                        </option>
-                                    @endforeach
+                                    <option value="{{ $category }}"
+                                    {{ old('Category') === $category ? 'selected' : '' }}>
+                                    {{ $category }}
+                                </option>
+                                @endforeach
+                                <option value="autre" >{{ __('autre') }}</option>
                                 </select>
                                 @error('Category')
                                     <span class="text-danger">{{ $message }}</span>
