@@ -9,6 +9,11 @@ class Result extends Model
 {
     use HasFactory;
 
+    public function resultable()
+    {
+        return $this->morphTo();
+    }
+    
     public function objective()
     {
         return $this->belongsTo(Objective::class);

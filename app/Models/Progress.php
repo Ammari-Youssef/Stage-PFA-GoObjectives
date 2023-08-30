@@ -10,12 +10,18 @@ class Progress extends Model
     use HasFactory;
 
     protected $fillable = [
-        'UserID', 'health_fitness', 'relationships', 'spirituality', 'environment',
-        'free_time', 'work_business', 'feelings', 'money_finance',
+        'UserID', 
+        'CategoryID', 
+        'value', 
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'UserID');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

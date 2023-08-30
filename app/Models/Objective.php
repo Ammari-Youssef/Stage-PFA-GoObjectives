@@ -9,9 +9,20 @@ class Objective extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'ObjectiveTitle', 'Description', 'Category', 'isDone',
-        'ExpectedResult', 'Type', 'DateDebut', 'Importance',
-        'Planning', 'PlanningType', 'PlanningDays', 'RestDays',
+        'UserID',
+        'CategoryID',
+        'ObjectiveTitle',
+        'Description',
+        'isDone',
+        'ExpectedResult',
+        'Type',
+        'NumberValue',
+        'LogicOption',
+        'InitialDuration',
+        'TargetDuration',
+        'DateStart',
+        'DateDeadline',
+        'Importance',
         'DureeEstimee',
     ];
 
@@ -28,16 +39,21 @@ class Objective extends Model
 
     public function levels()
     {
-        return $this->hasMany(Level::class);
+        return $this->belongsTo(Level::class);
     }
 
     public function Motives()
     {
         return $this->hasMany(Motive::class);
     }
-    
-    public function Results()
+
+    public function results()
     {
-        return $this->hasMany(Result::class);
+        return $this->morphMany(Result::class, 'resultable');
+    }
+
+    public function planning()
+    {
+        return $this->belongsTo(Planning::class);
     }
 }

@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Level extends Model
+class Category extends Model
 {
     use HasFactory;
 
-    public function objective()
+    protected $fillable= ['name'];
+
+    public function progress()
     {
-        return $this->hasMany(Objective::class);
+        return $this->hasMany(Progress::class);
     }
 }
