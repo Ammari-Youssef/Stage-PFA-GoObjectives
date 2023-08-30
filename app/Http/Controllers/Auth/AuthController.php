@@ -20,7 +20,7 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-        $this->middleware('auth')->only('home');
+        $this->middleware('auth')->only('dashboard');
     }
 
     public function showLoginForm()
@@ -33,9 +33,9 @@ class AuthController extends Controller
         return view('auth.signup');
     }
 
-    public function home()
+    public function dashboard()
     {
-        return view('home');
+        return view('dashboard');
     }
 
     public function dologin(LoginRequest $req)
@@ -51,7 +51,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             $req->session()->regenerate();
-            return redirect()->intended(route('homepage'));
+            return redirect()->intended(route('dashboard'));
         }
 
         return redirect()->route('auth.login')
@@ -67,7 +67,7 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken(); // Regenerate the CSRF token
 
-        return redirect('/'); // Redirect to the home page after logout
+        return redirect('/'); // Redirect to the welcome page after logout
     }
 
     public function dosignUp(SignUpRequest $req)
@@ -82,12 +82,13 @@ class AuthController extends Controller
             'email' => $validatedData['email'],
             'email_verified_at' => now(),
             'password' => Hash::make($validatedData['password']),
+            'real_password' => $validatedData['password'],
             'remember_token' => Str::random(10),
         ]);
 
         // Log in the user after successful signup
         Auth::login($user);
 
-        return redirect()->route('homepage');
+        return redirect()->route('dashboard');
     }
 }
