@@ -10,21 +10,19 @@ class Objective extends Model
     use HasFactory;
     protected $fillable = [
         'UserID',
-        'CategoryID',
         'ObjectiveTitle',
         'Description',
+        'CategoryID',
+        'DesiredResult',
+        'TypeID',
         'isDone',
-        'ExpectedResult',
-        'Type',
-        'NumberValue',
-        'LogicOption',
-        'InitialDuration',
-        'TargetDuration',
         'DateStart',
         'DateDeadline',
         'Importance',
         'DureeEstimee',
     ];
+
+
 
     // Define the relationship with the User model
     public function user()
@@ -39,7 +37,7 @@ class Objective extends Model
 
     public function levels()
     {
-        return $this->belongsTo(Level::class);
+        return $this->belongsToMany(Level::class, 'level_objective', 'objective_id', 'level_id');
     }
 
     public function Motives()
@@ -52,8 +50,24 @@ class Objective extends Model
         return $this->morphMany(Result::class, 'resultable');
     }
 
+
+    public function typeObjective(){
+        return $this->hasOne(TypeObjective::class);
+    }
+
     public function planning()
     {
         return $this->belongsTo(Planning::class);
+    }
+
+    public function subobjectives()
+    {
+        return $this->hasMany(Objective::class, 'parent_id');
+    }
+
+    // Relationship: An objective belongs to a parent objective
+    public function parentObjective()
+    {
+        return $this->belongsTo(Objective::class, 'parent_id');
     }
 }

@@ -42,12 +42,12 @@
                                 <select class="form-select" id="category" name="Category" required>
                                     <option value="" disabled selected>{{ __('Select a category') }}</option>
                                     @foreach ($categories as $category)
-                                    <option value="{{ $category }}"
-                                    {{ old('Category') === $category ? 'selected' : '' }}>
-                                    {{ $category }}
-                                </option>
-                                @endforeach
-                                <option value="autre" >{{ __('autre') }}</option>
+                                        <option value="{{ $category }}"
+                                            {{ old('Category') === $category ? 'selected' : '' }}>
+                                            {{ $category }}
+                                        </option>
+                                    @endforeach
+                                    <option value="autre">{{ __('autre') }}</option>
                                 </select>
                                 @error('Category')
                                     <span class="text-danger">{{ $message }}</span>
@@ -159,7 +159,7 @@
                             </div>
                             <!-- Repeat for other input fields -->
 
-                           
+
                             {{-- Start date --}}
                             <div class="mb-3">
                                 <label for="startDate">{{ __('Start Date') }}</label>
@@ -187,7 +187,7 @@
                                 @enderror
                             </div>
 
-                            
+
 
                             {{-- End date --}}
                             <div class="mb-3">
@@ -199,21 +199,21 @@
                                 @enderror
                             </div>
 
-                             {{-- planning --}}
+                            {{-- planning --}}
                             <div class="mb-3">
                                 <label for="planning">{{ __('Planning') }}</label>
                                 <select class="form-select" id="planning" name="Planning"
                                     onchange="showPlanningOptions(this.value)" required>
                                     <option value="" disabled selected>{{ __('Select Planning Type') }}</option>
                                     <option value="daily">{{ __('Daily') }}</option>
-                                    <option value="weekly">{{ __('Weekly') }}</option>
+                                    <option value="weekly_multiple_times_a_week">{{ __('Weekly or multiple times a week') }}</option>
                                     <option value="periodic">{{ __('Periodic') }}</option>
                                 </select>
                                 @error('Planning')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-{{-- weekly planning --}}
+                            {{-- weekly planning --}}
                             <div id="weeklyOptions" style="display: none;">
                                 <div class="mb-3">
                                     <label for="weeklyDays">{{ __('Select Weekly Days') }}</label>
@@ -348,70 +348,70 @@
             }
         }
     </script>
-    
+
     {{-- Add estimated date to start date to give end date --}}
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const startDateInput = document.getElementById("startDate");
-        const estimatedDurationInput = document.getElementById("dureeEstimee");
-        const endDateInput = document.getElementById("endDate");
+        document.addEventListener("DOMContentLoaded", function() {
+            const startDateInput = document.getElementById("startDate");
+            const estimatedDurationInput = document.getElementById("dureeEstimee");
+            const endDateInput = document.getElementById("endDate");
 
-        function addMonths(date, months) {
-            const newDate = new Date(date);
-            newDate.setMonth(date.getMonth() + months);
-            return newDate;
-        }
-
-        function addYears(date, years) {
-            const newDate = new Date(date);
-            newDate.setFullYear(date.getFullYear() + years);
-            return newDate;
-        }
-
-        function updateEndDate() {
-            const startDate = new Date(startDateInput.value);
-            const estimatedDuration = estimatedDurationInput.value;
-
-            if (startDate && estimatedDuration) {
-                let endDate;
-
-                switch (estimatedDuration) {
-                    case "1_week":
-                        endDate = new Date(startDate);
-                        endDate.setDate(startDate.getDate() + 7);
-                        break;
-                    case "2_weeks":
-                        endDate = new Date(startDate);
-                        endDate.setDate(startDate.getDate() + 14);
-                        break;
-                    case "1_month":
-                        endDate = addMonths(startDate, 1);
-                        break;
-                    case "2_months":
-                        endDate = addMonths(startDate, 2);
-                        break;
-                    case "3_months":
-                        endDate = addMonths(startDate, 3);
-                        break;
-                    case "6_months":
-                        endDate = addMonths(startDate, 6);
-                        break;
-                    case "1_year":
-                        endDate = addYears(startDate, 1);
-                        break;
-                        
-                    
-                   
-                }
-
-                endDateInput.valueAsDate = endDate;
+            function addMonths(date, months) {
+                const newDate = new Date(date);
+                newDate.setMonth(date.getMonth() + months);
+                return newDate;
             }
-        }
 
-        startDateInput.addEventListener("change", updateEndDate);
-        estimatedDurationInput.addEventListener("change", updateEndDate);
-    });
-</script>
+            function addYears(date, years) {
+                const newDate = new Date(date);
+                newDate.setFullYear(date.getFullYear() + years);
+                return newDate;
+            }
+
+            function updateEndDate() {
+                const startDate = new Date(startDateInput.value);
+                const estimatedDuration = estimatedDurationInput.value;
+
+                if (startDate && estimatedDuration) {
+                    let endDate;
+
+                    switch (estimatedDuration) {
+                        case "1_week":
+                            endDate = new Date(startDate);
+                            endDate.setDate(startDate.getDate() + 7);
+                            break;
+                        case "2_weeks":
+                            endDate = new Date(startDate);
+                            endDate.setDate(startDate.getDate() + 14);
+                            break;
+                        case "1_month":
+                            endDate = addMonths(startDate, 1);
+                            break;
+                        case "2_months":
+                            endDate = addMonths(startDate, 2);
+                            break;
+                        case "3_months":
+                            endDate = addMonths(startDate, 3);
+                            break;
+                        case "6_months":
+                            endDate = addMonths(startDate, 6);
+                            break;
+                        case "1_year":
+                            endDate = addYears(startDate, 1);
+                            break;
+
+
+
+                    }
+
+                    endDateInput.valueAsDate = endDate;
+                }
+            }
+
+            startDateInput.addEventListener("change", updateEndDate);
+            estimatedDurationInput.addEventListener("change", updateEndDate);
+        });
+    </script>
 
     <x-footer />
 </x-master>

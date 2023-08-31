@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Planning extends Model
+class TypeObjective extends Model
 {
+   protected $fillable=[
+      "Type",
+      "NumberValue",
+   ];
     use HasFactory;
-    
-    protected $fillable = ['type', 'week_days', 'numbers_of_days', 'number_of_rest_days'];
 
-    public function objectives()
-    {
+    public function objectives() {
         return $this->hasMany(Objective::class);
     }
 }

@@ -13,16 +13,19 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('ObjectiveID');
-            $table->string('TaskTitle');
-            $table->text('TaskDescription');
-            $table->text('TaskDate');
+            $table->string('title');
+            $table->text('description');
+            $table->date('date');
+            $table->boolean('is_done')->default(false);
             $table->timestamps();
             
-             // Define foreign key relationship
-            $table->foreign('ObjectiveID')->references('id')->on('objectives')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unsignedBigInteger('objective_id');
+            // FK relationships...
+
+            $table->foreign('objective_id')->references('id')->on('objectives')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
+
 
     /**
      * Reverse the migrations.

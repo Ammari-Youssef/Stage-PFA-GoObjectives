@@ -13,26 +13,37 @@ return new class extends Migration
     {
         Schema::create('objectives', function (Blueprint $table) {
             $table->id();
-            $table->string('ObjectiveTitle');
-            $table->string('Description');
-            $table->string('Category');
-            $table->boolean('isDone');
-            $table->boolean('ExpectedResult');
-            $table->string('Type');
-            $table->date('DateStart');
-            $table->date('DateDeadline');
-            $table->integer('Importance');
-            $table->string('Planning');
-            $table->string('PlanningType', 50);
-            $table->integer('PlanningDays');
-            $table->integer('RestDays');
-            $table->string('DureeEstimee', 50);
-            $table->unsignedBigInteger('UserID');
-            $table->foreign('UserID')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate(); //Fach tms7 / tmodifi id user ga3 les objectif ytsupprimaw / id ytmodifa 
+            $table->string('title');
+            $table->string('description');
+            $table->boolean('desired_result');
+            $table->integer('importance');
+            $table->date('start_date');
+            $table->string('estimated_date', 50);
+            $table->date('end_date');
+            $table->boolean('is_done')->default(false);
             $table->timestamps();
-           
+
+            // FK relationships...
+
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('objective_parent_id')->nullable();
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('type_id');
+            $table->unsignedBigInteger('planning_id');
+
+            
+            $table->foreign('objective_parent_id')->references('id')->on('objectives')->onDelete('cascade')->cascadeOnUpdate();
+            
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+
+            $table->foreign('type_id')->references('id')->on('type_objectives')->cascadeOnDelete()->cascadeOnUpdate();
+
+            $table->foreign('category_id')->references('id')->on('categories');
+
+            $table->foreign('planning_id')->references('id')->on('plannings');
         });
     }
+
 
     /**
      * Reverse the migrations.

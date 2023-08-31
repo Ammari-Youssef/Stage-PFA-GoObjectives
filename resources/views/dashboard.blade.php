@@ -54,7 +54,8 @@
         @if ($progressRecord)
         @endif
         @endforeach
-        <a href="{{ route('progress.edit', $progressRecord->id) }}" class="btn btn-primary mt-2">{{ __('Edit Progress') }}</a>
+        <a href="" class="btn btn-primary mt-2">{{ __('Edit Progress') }}</a>
+        {{-- {{ route('progress.edit', $progressRecord->id) }} --}}
 @else
     <p class="alert alert-info" role="alert">{{ __('You currently have no progress data.') }}</p>
     <a href="{{ route('progress.create') }}" class="btn btn-primary">{{ __('Add Progress') }}</a>

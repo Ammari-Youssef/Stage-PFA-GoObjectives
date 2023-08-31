@@ -11,28 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('motives', function (Blueprint $table) {
+        Schema::create('level_objective', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->string('title');
-            $table->text('description');
-            $table->timestamps();
-            
             $table->unsignedBigInteger('objective_id');
-            //FK
-            $table->foreign('objective_id')->references('id')->on('objectives')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('level_id');
+            $table->timestamps();
+
+            $table->foreign('objective_id')->references('id')->on('objectives')->onDelete('cascade');
+            $table->foreign('level_id')->references('id')->on('levels')->onDelete('cascade');
         });
-
-
     }
-
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('motives');
+        Schema::dropIfExists('level_objective');
     }
 };

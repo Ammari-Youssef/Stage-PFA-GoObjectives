@@ -10,17 +10,18 @@ class Task extends Model
     use HasFactory;
 
     protected $fillable = [
-        'ObjectiveID','TaskTitle', 'TaskDescription', 'TaskDate', 
+        'objective_id','title', 'description', 'date', 
     ];
 
     // Define the relationship with the Objective model
     public function objective()
     {
-        return $this->belongsTo(Objective::class, 'ObjectiveID');
+        return $this->belongsTo(Objective::class, 'objective_id');
     }
 
-    public function results()
-    {
-        return $this->morphMany(Result::class, 'resultable');
-    }
+    //this was added to determine whether the fk id belongs to objective or task
+    // public function results()
+    // {
+    //     return $this->morphMany(Result::class, 'resultable');
+    // }
 }

@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('levels', function (Blueprint $table) {
+        Schema::create('type_objectives', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description');
+            $table->string('name');
+            $table->decimal('number_value',10,2)->nullable();
+            $table->time('initial_time')->nullable();
+            $table->time('target_time')->nullable();
+            $table->boolean('logic_option')->nullable();
             $table->timestamps();
-            
-          
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('levels');
+        Schema::dropIfExists('type_objectives');
     }
 };

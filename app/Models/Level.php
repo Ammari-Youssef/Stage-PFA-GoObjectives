@@ -9,8 +9,8 @@ class Level extends Model
 {
     use HasFactory;
 
-    public function objective()
+    public function objectives()
     {
-        return $this->hasMany(Objective::class);
+        return $this->belongsToMany(Objective::class, 'level_objective', 'level_id', 'objective_id');
     }
 }

@@ -13,7 +13,17 @@ return new class extends Migration
     {
         Schema::create('results', function (Blueprint $table) {
             $table->id();
+            $table->double('number_value')->nullable();
+            $table->time('experience_time_value');
+            $table->boolean('logic_result');
+            $table->date('result_date');
+            $table->string('comment', 50);
             $table->timestamps();
+            
+            $table->unsignedBigInteger('objective_id'); // Foreign key to link with objectives table
+
+            // Define the foreign key relationship to the objectives table
+            $table->foreign('objective_id')->references('id')->on('objectives')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

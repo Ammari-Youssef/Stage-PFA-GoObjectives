@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProgressRequest extends FormRequest
+class StoreTaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,13 +21,11 @@ class StoreProgressRequest extends FormRequest
      */
     public function rules(): array
     {
-        $categories = Category::pluck('id')->toArray();
-        $rules = [];
-
-        foreach ($categories as $categoryID) {
-            $rules["category_$categoryID"] = "required|numeric|min:0|max:10";
-        }
-
-        return $rules;
+        return [
+            'ObjectiveID' => 'required|exists:objectives,id',
+            'TaskTitle' => 'required|string|max:255',
+            'TaskDescription' => 'required|string',
+            'TaskDate' => 'required|date',
+        ];
     }
 }
