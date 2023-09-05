@@ -2,6 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use App\Models\Planning;
+use App\Models\TypeObjective;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 /**
@@ -40,30 +44,33 @@ class ObjectiveFactory extends Factory
         $types = ['number', 'time', 'essential', 'logic'];
         $type = $this->faker->randomElement($types);
 
-        $expectedResults = [true, false];
-        $expectedResult = $this->faker->randomElement($expectedResults);
-
-        $importance = $this->faker->numberBetween(1, 5);
-
+        
+    
         $planningTypes = ['daily', 'weekly', 'periodically'];
         $planningType = $this->faker->randomElement($planningTypes);
 
         return [
-            'ObjectiveTitle' => $objectiveTitle,
-            'Description' => $this->faker->paragraph,
-            'Category' => $category,
-            'isDone' => $this->faker->boolean,
-            'ExpectedResult' => $expectedResult,
-            'Type' => $type,
-            'DateStart' => $this->faker->date,
-            'DateDeadline' => $this->faker->date,
-            'Importance' => $importance,
-            'Planning' => $this->faker->sentence,
-            'PlanningType' => $planningType,
-            'PlanningDays' => $this->faker->numberBetween(1, 30),
-            'RestDays' => $this->faker->numberBetween(0, 5),
-            'DureeEstimee' => $this->faker->randomFloat(2, 1, 100),
-            'UserID' => \App\Models\User::factory()->create()->id,
+            'title' => $objectiveTitle,
+            'description' => $this->faker->paragraph,
+            'desired_result' => $this->faker->boolean,
+            'importance' => $this->faker->numberBetween(1, 5),
+            'start_date' => $this->faker->date,
+            'estimated_date' => $this->faker->randomElement(['','1 month', '2 months', '3 months']),
+            'end_date' => $this->faker->date,
+            'is_done' => false,
+            'user_id' => function () {
+                return User::factory()->create()->id;
+            },
+            'objective_parent_id' => null,
+            'category_id' => function () {
+                return Category::factory()->create()->id;
+            },
+            'type_id' => function () {
+                return TypeObjective::factory()->create()->id;
+            },
+            'planning_id' => function () {
+                return Planning::factory()->create()->id;
+            },
         ];
     }
 }

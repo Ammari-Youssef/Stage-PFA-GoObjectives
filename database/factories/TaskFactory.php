@@ -52,11 +52,13 @@ class TaskFactory extends Factory
         $planningType = $this->faker->randomElement($planningTypes);
 
         return [
-            'ObjectiveID' => Objective::factory(), // Creating a related objective using its factory
-            'TaskTitle' => $objectiveTitle . ' Task',
-            'TaskDescription' => $this->faker->paragraph,
-            'TaskDate' => $this->faker->date(),
-            'isDone' => $this->faker->boolean,
+            'title' => $objectiveTitle . ' Task' ,
+            'description' => $this->faker->paragraph,
+            'date' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
+            'is_done' => $this->faker->boolean,
+            'objective_id' => Objective::factory()->create()->id ,
+            // 'created_at' => Carbon::now(),
+            // 'updated_at' => Carbon::now(),
         ];
     }
 }

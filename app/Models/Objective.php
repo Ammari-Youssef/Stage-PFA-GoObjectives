@@ -47,13 +47,10 @@ class Objective extends Model
 
     public function results()
     {
-        return $this->morphMany(Result::class, 'resultable');
+        
     }
 
 
-    public function typeObjective(){
-        return $this->hasOne(TypeObjective::class);
-    }
 
     public function planning()
     {

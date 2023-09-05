@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->double('number_value')->nullable();
             $table->time('experience_time_value');
-            $table->boolean('logic_result');
+            $table->boolean('behavior_result');
             $table->date('result_date');
             $table->string('comment', 50);
             $table->timestamps();

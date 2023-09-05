@@ -15,15 +15,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            CategorySeeder::class,
+            TypeObjectiveSeeder::class,
+            PlanningSeeder::class,
             ObjectiveSeeder::class,
-            ProgressSeeder::class,
             TaskSeeder::class,
-            LevelSeeder::class,
             ResultSeeder::class,
-            MotiveSeeder::class,
+            // LevelSeeder::class,
+            // MotiveSeeder::class,
 
         ]);
-        // \App\Models\User::factory(5)->create();
+        \App\Models\User::factory(5)->create();
 
         // \App\Models\User::factory()->create([
         //     'firstname' => 'Youssef',
@@ -32,12 +34,12 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'admin@example.com',
         //     'password' => '12345678',
         // ]);
-        \App\Models\User::factory()->create([
-            'firstname' => 'Skalapa',
-            'lastname' => 'Baroni',
-            'username' => 'Skalapa Baroni',
-            'email' => 'sklapa@example.com',
-            'password' => '12345678',
-        ]);
+        // \App\Models\User::factory()->create([
+        //     'firstname' => 'Skalapa',
+        //     'lastname' => 'Baroni',
+        //     'username' => 'Skalapa Baroni',
+        //     'email' => 'sklapa@example.com',
+        //     'password' => '12345678',
+        // ]);
     }
 }

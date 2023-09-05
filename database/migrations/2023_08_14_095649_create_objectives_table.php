@@ -16,6 +16,11 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->boolean('desired_result');
+            $table->string('type');
+            $table->decimal('number_value', 10, 2)->nullable();
+            $table->time('initial_time')->nullable();
+            $table->time('target_time')->nullable();
+            $table->boolean('behavior_option')->nullable();
             $table->integer('importance');
             $table->date('start_date');
             $table->string('estimated_date', 50);
@@ -28,7 +33,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('objective_parent_id')->nullable();
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('type_id');
+            // $table->unsignedBigInteger('type_id');
             $table->unsignedBigInteger('planning_id');
 
             
@@ -36,7 +41,7 @@ return new class extends Migration
             
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
 
-            $table->foreign('type_id')->references('id')->on('type_objectives')->cascadeOnDelete()->cascadeOnUpdate();
+            // $table->foreign('type_id')->references('id')->on('type_objectives')->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->foreign('category_id')->references('id')->on('categories');
 

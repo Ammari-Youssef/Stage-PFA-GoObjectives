@@ -15,4 +15,12 @@ class Planning extends Model
     {
         return $this->hasMany(Objective::class);
     }
+
+    public function level()
+    {
+        return $this->hasMany(Planning::class);
+    }
+
+    
+
 }

@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\Result;
+use App\Models\TypeObjective;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ResultSeeder extends Seeder
+class TypeObjectiveSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Result::factory(5)->create();
+        TypeObjective::factory()->count(5)->create();
     }
 }

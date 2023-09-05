@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('plannings', function (Blueprint $table) {
             $table->id();
-            $table->string('type'); // weekly or multiple_times_a_week, daily, periodic
-            $table->string('week_days')->nullable(); // JSON array of selected weekdays
+            $table->unsignedBigInteger('id_type'); // weekly or multiple_times_a_week, daily, periodic
+            $table->string('selected_week_days')->nullable(); // JSON array of selected weekdays
             $table->integer('number_of_days')->nullable(); // Number of days for periodic type
             $table->integer('number_of_rest_days')->nullable(); // Number of rest days for periodic type            
             $table->timestamps();
             
-           
+           $table->foreign('id_type')->references('id')->on('planning_types');
            
         });
     }

@@ -13,4 +13,9 @@ class Level extends Model
     {
         return $this->belongsToMany(Objective::class, 'level_objective', 'level_id', 'objective_id');
     }
+
+    public function planning()
+    {
+        return $this->belongsTo(Planning::class);
+    }
 }

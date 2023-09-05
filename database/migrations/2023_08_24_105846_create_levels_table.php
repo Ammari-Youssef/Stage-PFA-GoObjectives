@@ -13,10 +13,15 @@ return new class extends Migration
     {
         Schema::create('levels', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description');
+            $table->string('title')->default('Default');
+            $table->text('description')->default('No description');
+            $table->unsignedBigInteger('planning_id')->nullable(); 
+   
             $table->timestamps();
             
+            $table->foreign('planning_id')->references('planning')->on('id')->onDelete('cascade')->onUpdate('cascade');
+
+
           
         });
     }

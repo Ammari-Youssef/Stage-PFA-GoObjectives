@@ -2,12 +2,13 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\NavigationController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MotiveController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ObjectiveController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\ResultController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,10 +42,14 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/destroy', [ProfileController::class, 'destroy'])->name('profile.delete');
     });
 
-    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('/progress', ProgressController::class);
-    Route::resource('/objective', ObjectiveController::class);
-    Route::resource('/task', TaskController::class);
-    Route::resource('/motive', MotiveController::class);
+
+        Route::resource('/progress', ProgressController::class);
+        Route::post('/progress/update_single_rating', [ProgressController::class, 'update_single_rating'])->name('progress.update_single_rating');
+        Route::resource('/objective', ObjectiveController::class);
+        Route::resource('/task', TaskController::class);
+        Route::resource('/motive', MotiveController::class);
+        Route::resource('/result', ResultController::class);
+
 });

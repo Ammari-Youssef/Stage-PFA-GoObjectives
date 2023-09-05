@@ -1,46 +1,37 @@
-@props(['label', 'value', 'max'])
+@props(['label', 'value', 'max', 'id', 'type' => 'show'])
 
 
+<div class="percentage-bar" data-value="{{ $value }}">
+    @if ($type === 'show')
+        <div class="d-flex justify-content-between align-items-center">
+            <span>{{ $label }}</span>
+            <span></span>
+            <span>{{ ($value / $max) * 100 }}%</span>
+        </div>
+    @elseif($type === 'edit')
+        <div class="row">
+            <div class="col-6">{{ $label }}</div>
+            {{-- <div class="col-4 text-end">{{ ($value / $max) * 100 }}%</div>  --}}
+            <div class=" text-end">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#{{ 'editProgressModal' . $id }}" data-id="{{$id}}" class="editIcon">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#{{'progressDetailsModal'.$id}}"><i
+                        class="fa-solid fa-eye"></i></a>
 
-<script>
-    // Sample data
-    var data = {
-        labels: ["Progress"],
-        datasets: [{
-            data: [75], // Replace with your actual data
-            backgroundColor: 'rgba(54, 162, 235, 0.8)',
-            borderWidth: 0
-        }]
-    };
+            </div>
+        </div>
+    @endif
 
-    var options = {
-        scales: {
-            x: {
-                beginAtZero: true,
-                max: 100
-            }
-        },
-        plugins: {
-            legend: {
-                display: false
-            }
-        }
-    };
-
-    var ctx = document.getElementById('curvedBarChart').getContext('2d');
-    var chart = new Chart(ctx, {
-        type: 'horizontalBar',
-        data: data,
-        options: options
-    });
-</script>
-
-<div class="percentage-bar">
-    <div class="d-flex justify-content-between align-items-center">
-        <span>{{ $label }}</span>
-        <span>{{ $value }} / {{ $max }}</span>
-    </div>
     <div class="progress">
-        <div class="progress-bar" role="progressbar" style="width: {{ ($value / $max) * 100 }}%;" aria-valuenow="{{ $value }}" aria-valuemin="0" aria-valuemax="{{ $max }}"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-animated" id="single-data-bar-{{ $id }}"
+            role="progressbar" style="width: {{ ($value / $max) * 100 }}%;" aria-valuenow="{{ $value }}"
+            aria-valuemin="0" aria-valuemax="{{ $max }}">{{ ($value / $max) * 100 }}%</div>
     </div>
 </div>
+
+
+
+
+
+

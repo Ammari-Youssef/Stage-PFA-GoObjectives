@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreObjectiveRequest;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Objective;
+use App\Models\TypeObjective;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -18,7 +20,7 @@ class ObjectiveController extends Controller
         //
         $userId = Auth::id();
 
-        $objectives = Objective::where('UserID', $userId)->get(); // Assuming you have an 'Objective' model
+        $objectives = Objective::where('user_id', $userId)->get(); // Assuming you have an 'Objective' model
         // dd($objectives);
         return view('objective.index', compact('objectives'));
     }
@@ -29,10 +31,13 @@ class ObjectiveController extends Controller
     public function create()
     {
         //
-        $categories = [
-            'Health & Fitness', 'Relationships', 'Spirituality', 'Environment',
-            'Free Time', 'Work & Business', 'Feelings', 'Money & Finance'
+        $categories = Category::all();
+        $TypeObjective = [
+            "number" , "time" , "essential" , "behavioral" ,  
         ];
+
+        // dd($categories);
+
         return view('objective.create', compact('categories'));
     }
 

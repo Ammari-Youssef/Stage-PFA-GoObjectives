@@ -12,21 +12,19 @@
             </div>
         @endif
         <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <div class="card">
-                    <div class="card-header">Rate Your Progress</div>
-                    <div class="card-body">
+           
+                        <h2>{{__('Rate Your Progress')}}</h2>
                         <form action="{{ route('progress.store') }}" method="POST">
                             @csrf
                             @foreach ($categories as $category)
                                 <div class="mb-3">
                                     <label for="{{ $category->id }}">{{ $category->name }}</label>
                                     <div class="text-center">
-                                        <span id="{{ $category->id }}Value">0</span>
+                                        <span id="{{ $category->id }}Value">5.0</span>
                                     </div>
                                     <input type="range" class="form-range" min="0" max="10"
-                                        step="0.1" id="{{ $category->id }}"
-                                        name="category {{$category->id}}" required>
+                                        step="0.25" id="{{ $category->id }}"
+                                        name="category {{$category->id}}" step="0.25"  required>
                                 </div>
                             @endforeach
                             <button type="submit" class="btn btn-primary">Submit</button>

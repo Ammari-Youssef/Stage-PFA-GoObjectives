@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Motive;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,5 +14,6 @@ class MotiveSeeder extends Seeder
     public function run(): void
     {
         //
+        Motive::factory()->count(3)->create();
     }
 }

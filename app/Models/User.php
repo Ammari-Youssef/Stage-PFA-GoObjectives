@@ -22,8 +22,10 @@ class User extends Authenticatable
         'lastname',
         'username',
         'email',
+        'email_verified_at',
         'password',
         'real_password',
+        'remember_token'
     ];
 
     /**
@@ -51,8 +53,5 @@ class User extends Authenticatable
         return $this->hasMany(Objective::class, 'UserID');
     }
 
-    public function progress()
-    {
-        return $this->hasOne(Progress::class);
-    }
+   
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignUpRequest;
 use App\Models\User;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -80,7 +81,7 @@ class AuthController extends Controller
             'lastname' => $validatedData['lastname'],
             'username' => $validatedData['username'],
             'email' => $validatedData['email'],
-            'email_verified_at' => now(),
+            'email_verified_at' => Carbon::now(),
             'password' => Hash::make($validatedData['password']),
             'real_password' => $validatedData['password'],
             'remember_token' => Str::random(10),
