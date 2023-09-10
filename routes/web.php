@@ -32,7 +32,7 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/signup', [AuthController::class, 'dosignUp'])->name('auth.signup');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['web','auth'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
     Route::prefix('profile')->group(function () {
@@ -42,14 +42,16 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/destroy', [ProfileController::class, 'destroy'])->name('profile.delete');
     });
 
+    //App
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::resource('/progress', ProgressController::class);
+    Route::post('/progress/update_single_rating', [ProgressController::class, 'update_single_rating'])->name('progress.update_single_rating');
 
-        Route::resource('/progress', ProgressController::class);
-        Route::post('/progress/update_single_rating', [ProgressController::class, 'update_single_rating'])->name('progress.update_single_rating');
-        Route::resource('/objective', ObjectiveController::class);
-        Route::resource('/task', TaskController::class);
-        Route::resource('/motive', MotiveController::class);
-        Route::resource('/result', ResultController::class);
+    Route::resource('/objective', ObjectiveController::class);
+    Route::post('objective/{objective}/toggleStatus', 'ObjectiveController@toggleStatus')->name('objective.toggleStatus');
 
+    Route::resource('/task', TaskController::class);
+    Route::resource('/motive', MotiveController::class);
+    Route::resource('/result', ResultController::class);
 });

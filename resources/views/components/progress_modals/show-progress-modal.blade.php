@@ -10,8 +10,9 @@
                 {{-- Include your show view content here --}}
                 <h5 class="card-title">Category: {{ $progress->category->name }}</h5>
                 <p class="card-text">Rating: {{ $progress->rating }}</p>
-                <p class="card-text">User ID: {{ $progress->user_id }}</p>
+                <p class="card-text">User : {{ $progress->username }}</p>
                 <p class="card-text">Created At: {{ $progress->created_at->format('F j, Y H:i:s') }}</p>
+                <p class="card-text">Updated At: {{ $progress->updated_at->format('F j, Y H:i:s') }}</p>
                 <x-charts.single-data-percentage-bar label="{!! $progress->category->name !!}"
                                         value="{{ $progress->rating }}" max="10" id="{{ $progress->id }}"
                                         type="show" />

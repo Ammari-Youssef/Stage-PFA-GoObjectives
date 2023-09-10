@@ -22,18 +22,24 @@ class StoreObjectiveRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ObjectiveTitle' => 'required|string|max:255',
-            'Description' => 'required|string',
-            'Category' => 'required|string',
-            'ExpectedResult' => 'required|string',
-            'Type' => 'required|in:improve,remove,number,logic,essential',
-            'PlanningType' => 'required_if:Type,number,logic|string',
-            'PlanningDays' => 'required_if:PlanningType,weekly,periodic|integer|min:1',
-            'RestDays' => 'required_if:PlanningType,periodic|integer|min:0',
-            'DureeEstimee' => 'required|string|in:one_week,two_weeks,one_month,two_months,three_months,six_months,one_year,custom',
-            'CustomDuration' => 'required_if:DureeEstimee,custom|string',
-            'Importance' => 'required|integer|min:1|max:5',
-            'Planning' => 'required|string',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'desired_result' => 'required|in:1,0',
+            'type' => 'required|in:number,time,behavioral',
+            'number_value' => 'required_if:type,number|numeric|min:0',
+            'behavior_option' => 'required_if:type,behavioral|in:1,0',
+            'initial_time' => 'required_if:type,time',
+            'target_time' => 'required_if:type,time',
+            'importance' => 'required|integer|between:1,5',
+            'start_date' => 'required|date',
+            'estimated_duration' => 'required|in:1_week,2_weeks,1_month,2_months,3_months,6_months,1_year',
+            'end_date' => 'required|date',
+            'planning_type_id' => 'required|integer|exists:planning_types,id', //verifier plannings_id exist dans la table planning_type sous colonne id
+            'selected_week_days' => 'required_if:planning_type_id,weekly or multiple times a week|array',
+            'number_of_days' => 'required_if:planning_type_id,periodic|integer|min:1',
+            'number_of_rest_days' => 'required_if:planning_type_id,periodic|integer|min:0',
+   
         ];
     }
 }

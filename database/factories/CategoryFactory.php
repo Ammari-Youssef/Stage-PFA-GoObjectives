@@ -18,7 +18,7 @@ class CategoryFactory extends Factory
     {
         
         return [
-            'progress_value' => $this->faker->randomFloat(2, 0, 10),
+            // 'progress_value' => $this->faker->randomFloat(2, 0, 10),
             
         ];
             // 'UserID' => function () {

@@ -6,7 +6,7 @@ use App\Http\Requests\EditPasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-
+use Illuminate\Validation\ValidationException;
 
 class ProfileController extends Controller
 {
@@ -57,19 +57,34 @@ class ProfileController extends Controller
         return redirect()->route('profile.show')->with('success', 'Profile information updated successfully.');
     }
 
-    public function updatePassword(EditPasswordRequest $request)
+    public function updatePassword(Request $request)
     {
-        $user = auth()->user();
-
-        
-
-        $user->update([
-            'password' => Hash::make($request->input('new_password')),
-            'real_password' => $request->input('new_password'),
+        // Validate the request data
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|string|min:8|confirmed',
         ]);
 
+        // Get the authenticated user
+        $user = auth()->user();
+
+        // Check if the old password is correct
+        if (!Hash::check($request->old_password, $user->password)) {
+            throw ValidationException::withMessages([
+                'old_password' => ['The provided old password is incorrect.'],
+            ]);
+        }
+
+        // Update the user's password
+        $user->update([
+            'password' => Hash::make($request->new_password),
+            'real_password' => $request->new_password,
+        ]);
+
+        // Redirect back with a success message
         return redirect()->route('profile.show')->with('success', 'Password updated successfully.');
     }
+
 
     public function destroy()
     {

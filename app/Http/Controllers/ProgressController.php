@@ -7,11 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\StoreProgressRequest;
-use App\Http\Requests\UpdateProgressRequest;
 use App\Models\Category;
-use Illuminate\Auth\Events\Validated;
-use Illuminate\Contracts\Support\ValidatedData;
-use Illuminate\Support\Facades\DB;
+
 
 class ProgressController extends Controller
 {
@@ -22,13 +19,13 @@ class ProgressController extends Controller
     {
         $userId = Auth::id();
 
-        $progressRecords = Progress::where('user_id', $userId)->paginate(10);
+        $progressRecords = Progress::where('user_id', $userId)->get();
         // Fetch progress data from the database
-        $progressData = Progress::select('rating') ->get();
+        $progressData = Progress::select('rating')->get();
 
         // Prepare data for the chart
-        $labels =Category::all()->pluck('name')->toArray(); // Assuming you have a Category model
-       
+        $labels = Category::all()->pluck('name')->toArray(); // Assuming you have a Category model
+
         $colors = array_map(function () {
             return '#' . substr(md5(rand()), 0, 6);
         }, range(1, count($labels)));
@@ -39,15 +36,14 @@ class ProgressController extends Controller
         dump([
             // $progress,
             //     $progressDataArray,
-                "progress records"=>$progressRecords->count(),
-           "values"=> $values,
-          "lable"=>  $labels,
-           "static", $summaryStatistics
+            "progress records" => $progressRecords->count(),
+            "values" => $values,
+            "lable" =>  $labels,
+            "static"=> $summaryStatistics
         ]);
-        return view('progress.index', compact('labels', 'values', 'progressRecords', 'colors' , 'userId', 'summaryStatistics', 'userInsights'));
 
+        return view('progress.index', compact('labels', 'values', 'progressRecords', 'colors', 'userId', 'summaryStatistics', 'userInsights'));
 
-        // return view('progress.index', compact( , 'progressDataArray'));
     }
 
     /**
@@ -93,11 +89,33 @@ class ProgressController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id )
+    public function show($id)
     {
         $progress = Progress::findOrFail($id);
 
-        return view('progress.show', compact('progress'));
+        $rating = $progress->rating;
+
+        if ($rating ==0) {
+            $insights = 'Invalid rating. Please provide a rating between 0 and 10.';
+    
+        }
+        if ($rating < 3) {
+            $ratingClass = 'low-rating';
+            $insights = "<span class='$ratingClass' style='color:red'><i class='fas fa-exclamation-triangle'></i></span> Your rating for <b class='$ratingClass'>{$progress->category->name}</b> is consistently low. Consider taking actions to improve in this area.";
+        } elseif ($rating >= 3 && $rating < 6) {
+            $ratingClass = 'moderate-rating';
+            $insights = "<span class='$ratingClass' style='color:gold'><i class='fas fa-info-circle'></i></span> Your rating for <b class='$ratingClass'>{$progress->category->name}</b> is in the moderate range. There is room for improvement.";
+        } elseif ($rating >= 6 && $rating < 8) {
+            $ratingClass = 'good-rating';
+            $insights = "<span class='$ratingClass' style='color:#00FF00'><i class='fas fa-check-circle'></i></span> Your rating for <b class='$ratingClass'>{$progress->category->name}</b> is good, but there is still room for enhancement.";
+        } elseif ($rating >= 8 && $rating <= 10) {
+            $ratingClass = 'excellent-rating';
+            $insights = "<span class='$ratingClass' style='color:green'><i class='fas fa-star'></i></span> Congratulations! Your rating for <b class='$ratingClass'>{$progress->category->name}</b> is excellent.";
+        } else {
+            $insights = 'Invalid rating. Please provide a rating between 0 and 10.';
+        }
+
+        return view('progress.show', compact('progress', 'insights'));
     }
 
     /**
@@ -114,10 +132,10 @@ class ProgressController extends Controller
 
         dump([
             // $UserProgressData, 
-            'userprogress'=>$user_progress ,
+            'userprogress' => $user_progress,
             $progressID
         ]);
-        return view('progress.edit', compact('categories', 'UserProgressData', 'progressID','userId'));
+        return view('progress.edit', compact('categories', 'UserProgressData', 'progressID', 'userId'));
     }
 
     /**
@@ -165,29 +183,43 @@ class ProgressController extends Controller
         // Update the progress record
         $progress->rating = $request->input('rating');
         $progress->save();
-        
+
         $userId = Auth::id();
         $progressRecords = Progress::where('user_id', $userId)->paginate(10);
 
-        $output='';
- foreach ($progressRecords as $progress){
-                        $output.='      
-                                <x-charts.single-data-percentage-bar label="{!! $progress->category->name !!}"
-                                        value="{{ $progress->rating }}" max="10" id="{{ $progress->id }}"
-                                        type="edit" />
+        // $output = '';
+        // foreach ($progressRecords as $progress) {
+        //     $name= $progress->category->name;
+        //     $id=$progress->id;
+        //     $rating= $progress->rating;
+        //     $output .= '<x-charts.single-data-percentage-bar label="'.$name. '"
+        //                                 value="' . $rating . '" max="10" id="'.$id.'"
+        //                                 type="edit" />
 
-                                    <x-edit-progress-rating-modal modalId="{{ "editProgressModal" }}"
-                                        modalLabel="Edit Progress"
-                                        formAction="#" :inputName="$progress->category->name"
-                                        rating="{{ $progress->rating }}" :id="$progress->id" />
+        //                             <x-edit-progress-rating-modal modalId='."editProgressModal". '
+        //                                 modalLabel="Edit Progress"
+        //                                 formAction="#" :inputName="$progress->category->name"
+        //                                 rating="' . $rating . '" :id="' . $id . '" />
 
-                                        <x-show-progress-modal :progress="$progress"/>';
-      }
+        //                                 <x-show-progress-modal :progress="$progress"/> ' ;
+        // }
 
-        // Redirect back to the dashboard with a success message
-        // return response()->json(['status '=> 200 , "new_rating"=>$request->input('rating') ,'new_data' => $progressRecords]);
-        // return $output;
-        return redirect()->route('progress.index')->with('success', $progress->category->name ." rating has been updated");
+        // dd($output);
+        // return response()->json(['status'=> $output ,]);
+        // $data = [];
+
+        // foreach ($progressRecords as $progress) {
+        //     $data[] = [
+        //         'label' => $progress->category->name,
+        //         'value' => $progress->rating,
+        //         'id' => $progress->id,
+        //         'inputName' => $progress->category->name,
+        //     ];
+        // }
+
+        // return response()->json(['data' => $data]);
+
+        return redirect()->route('progress.index')->with('success', $progress->category->name . " rating has been updated");
     }
 
     /**
@@ -195,7 +227,14 @@ class ProgressController extends Controller
      */
     public function destroy(Progress $progress)
     {
-        //
+        try {
+            $progress->rating = 0;
+            // Save the changes to the database
+            $progress->save();
+            return redirect()->route('progress.index')->with('success', 'Progress record deleted successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('progress.index')->with('error', 'Error deleting progress record');
+        }
     }
 
 
@@ -203,16 +242,24 @@ class ProgressController extends Controller
     {
         // Analyze $progressData and generate insights
         $insights = [];
-
         foreach ($progressData as $progress) {
-            if ($progress->rating < 3) {
-                $insights[] = "Your rating for {$progress->category->name} is consistently low. Consider taking actions to improve in this area.";
+            $rating = $progress->rating;
+
+            if ($rating < 3) {
+                $ratingClass = 'low-rating';
+                $insights[] = "<span class='$ratingClass' style='color:red'><i class='fas fa-exclamation-triangle'></i></span> Your rating for <b class='$ratingClass'>{$progress->category->name}</b> is consistently low. Consider taking actions to improve in this area.";
+            } elseif ($rating >= 3 && $rating < 6) {
+                $ratingClass = 'moderate-rating';
+                $insights[] = "<span class='$ratingClass' style='color:gold'><i class='fas fa-info-circle'></i></span> Your rating for <b class='$ratingClass'>{$progress->category->name}</b> is in the moderate range. There is room for improvement.";
+            } elseif ($rating >= 6 && $rating < 8) {
+                $ratingClass = 'good-rating';
+                $insights[] = "<span class='$ratingClass' style='color:#00FF00'><i class='fas fa-check-circle'></i></span> Your rating for <b class='$ratingClass'>{$progress->category->name}</b> is good, but there is still room for enhancement.";
+            } elseif ($rating >= 8 && $rating <= 10) {
+                $ratingClass = 'excellent-rating';
+                $insights[] = "<span class='$ratingClass' style='color:green'><i class='fas fa-star'></i></span> Congratulations! Your rating for <b class='$ratingClass'>{$progress->category->name}</b> is excellent.";
+            } else {
+                $insights[] = "Invalid rating. Please provide a rating between 0 and 10.";
             }
-            if ($progress->rating >= 7) {
-                
-                $insights[] = "Your rating for {$progress->category->name} is good. Congratulations keep going !!.";
-            }
-            
         }
 
         return $insights;
@@ -228,7 +275,4 @@ class ProgressController extends Controller
             'maxRating' => $ratings->max(),
         ];
     }
-
-    
-
 }

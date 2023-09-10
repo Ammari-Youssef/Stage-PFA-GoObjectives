@@ -1,11 +1,20 @@
-<x-master title="{{__('My Profile')}}"> 
+<x-master title="{{ __('My Profile') }}">
 
-    <x-navbar/>
-    
+    <x-navbar />
+
     <div class="container">
         @if (session('success'))
             <div class="alert alert-success text-center">
                 {{ session('success') }}
+            </div>
+        @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
         <div class="row">
@@ -42,9 +51,11 @@
                     </div>
                 </div>
                 <div class="card mb-4">
+
                     <div class="card-header">{{ __('Update Password') }}</div>
                     <div class="card-body">
-                        <p class="card-text text-black-50">Ensure your account is using a long, random password to stay secure.</p>
+                        <p class="card-text text-black-50">Ensure your account is using a long, random password to stay
+                            secure.</p>
                         <p class="card-text text-black-50">Update your information and email address .</p>
                         <form action="{{ route('profile.updatePassword') }}" method="POST">
                             @csrf
@@ -72,9 +83,9 @@
                 <div class="card mb-4">
                     <div class="card-header">{{ __('Delete Account') }}</div>
                     <div class="card-body">
-                          <p class="text-black-50 cartd-text">Permanently delete your account and all associated data</p>
+                        <p class="text-black-50 cartd-text">Permanently delete your account and all associated data</p>
                         <p class="card-text text-black-50">Once account deleted, your data will be destroyed</p>
-                       
+
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
                             {{ __('Delete Account') }}
                         </button>
@@ -98,7 +109,8 @@
                     {{ __('Are you sure you want to delete your account? This action cannot be undone.') }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">{{ __('Cancel') }}</button>
                     <form action="{{ route('profile.delete') }}" method="POST">
                         @csrf
                         @method('DELETE')

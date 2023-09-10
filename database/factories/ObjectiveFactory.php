@@ -41,7 +41,7 @@ class ObjectiveFactory extends Factory
 
         $objectiveTitle = $titlePattern . ' ' . $this->faker->randomNumber(1);
 
-        $types = ['number', 'time', 'essential', 'logic'];
+        $types = ['number', 'time', 'essential', 'behavioral'];
         $type = $this->faker->randomElement($types);
 
         
@@ -55,21 +55,22 @@ class ObjectiveFactory extends Factory
             'desired_result' => $this->faker->boolean,
             'importance' => $this->faker->numberBetween(1, 5),
             'start_date' => $this->faker->date,
-            'estimated_date' => $this->faker->randomElement(['','1 month', '2 months', '3 months']),
+            'estimated_duration' => $this->faker->randomElement(['1 week','2 week','1 month', '2 months', '3 months','6 months','1 year']),
             'end_date' => $this->faker->date,
             'is_done' => false,
             'user_id' => function () {
-                return User::factory()->create()->id;
+                return User::inRandomOrder()->first()->id;
+            //   return  1;
             },
             'objective_parent_id' => null,
             'category_id' => function () {
-                return Category::factory()->create()->id;
+                // Retrieve an existing category ID randomly
+                return Category::inRandomOrder()->first()->id;
             },
-            'type_id' => function () {
-                return TypeObjective::factory()->create()->id;
-            },
+            'type' => $type,
             'planning_id' => function () {
-                return Planning::factory()->create()->id;
+                // Retrieve an existing category ID randomly
+                return Planning::inRandomOrder()->first()->id;
             },
         ];
     }

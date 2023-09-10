@@ -8,8 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Planning extends Model
 {
     use HasFactory;
-    
-    protected $fillable = ['type', 'week_days', 'numbers_of_days', 'number_of_rest_days'];
+
+    protected $fillable = [
+        'planning_type_id',
+        'selected_week_days', // This should be casted to JSON in your model
+        'number_of_days',
+        'number_of_rest_days',
+    ];
+    protected $casts = [
+        'selected_week_days' => 'array',
+    ];
 
     public function objectives()
     {

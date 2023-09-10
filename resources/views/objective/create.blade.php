@@ -21,35 +21,34 @@
                             @csrf
                             {{-- Title --}}
                             <div class="mb-3">
-                                <label for="objectiveTitle">{{ __('Objective Title') }}</label>
-                                <input type="text" class="form-control" id="objectiveTitle" name="ObjectiveTitle"
-                                    value="{{ old('ObjectiveTitle') }}" required>
-                                @error('ObjectiveTitle')
+                                <label for="title">{{ __('Objective Title') }}</label>
+                                <input type="text" class="form-control" id="title" name="title"
+                                    value="{{ old('title') }}" required>
+                                @error('title')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             {{-- Desscription --}}
                             <div class="mb-3">
                                 <label for="description">{{ __('Description') }}</label>
-                                <textarea class="form-control" id="description" name="Description" rows="4">{{ old('Description') }}</textarea>
-                                @error('Description')
+                                <textarea class="form-control" id="description" name="description" rows="4">{{ old('description') }}</textarea>
+                                @error('description')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             {{-- Category --}}
                             <div class="mb-3">
-                                <label for="category">{{ __('Category') }}</label>
-                                <select class="form-select" id="category" name="Category" required>
+                                <label for="category_id">{{ __('Category') }}</label>
+                                <select class="form-select" id="category_id" name="category_id" required>
                                     <option value="" disabled selected>{{ __('Select a category') }}</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category }}"
-                                            {{ old('Category') === $category ? 'selected' : '' }}>
-                                            {{ $category }}
+                                        <option value="{{ $category->id }}"
+                                            {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
                                         </option>
                                     @endforeach
-                                    <option value="autre">{{ __('autre') }}</option>
                                 </select>
-                                @error('Category')
+                                @error('category_id')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -58,36 +57,36 @@
                                 <label>{{ __('Desired Result') }}</label>
                                 <div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="ExpectedResult"
+                                        <input class="form-check-input" type="radio" name="desired_result"
                                             id="improve" value="1"
-                                            {{ old('ExpectedResult') === '1' ? 'checked' : '' }}>
+                                            {{ old('desired_result') == '1' ? 'checked' : '' }}>
                                         <label class="form-check-label" for="improve">{{ __('Improve') }}</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="ExpectedResult"
+                                        <input class="form-check-input" type="radio" name="desired_result"
                                             id="remove" value="0"
-                                            {{ old('ExpectedResult') === '0' ? 'checked' : '' }}>
+                                            {{ old('desired_result') == '0' ? 'checked' : '' }}>
                                         <label class="form-check-label" for="remove">{{ __('Remove') }}</label>
                                     </div>
                                 </div>
-                                @error('ExpectedResult')
+                                @error('desired_result')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             {{-- Type goal --}}
                             <div class="mb-3">
                                 <label for="objective_type">{{ __('Type of Objective') }}</label>
-                                <select class="form-select" id="objective_type" name="Type" required>
+                                <select class="form-select" id="objective_type" name="type" required>
                                     <option value="" disabled selected>Choose Nature of Objective</option>
-                                    <option value="number" {{ old('Type') === 'number' ? 'selected' : '' }}>Number
-                                    </option>
-                                    <option value="time" {{ old('Type') === 'time' ? 'selected' : '' }}>Time</option>
-                                    <option value="logic" {{ old('Type') === 'logic' ? 'selected' : '' }}>Logic
-                                    </option>
-                                    <option value="essential" {{ old('Type') === 'essential' ? 'selected' : '' }}>
-                                        Essential</option>
+                                    <div class="form-group">
+
+                                        <option value="number">Number</option>
+                                        <option value="time">Time</option>
+                                        <option value="behavioral">Behavioral (Logic)</option>
+
+                                    </div>
                                 </select>
-                                @error('Type')
+                                @error('type_id')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -95,46 +94,46 @@
                             <div class="mb-3">
                                 <div id="numberFields" style="display: none;">
                                     <label for="number_value">{{ __('Number Value') }}</label>
-                                    <input type="number" class="form-control" id="number_value" name="NumberValue"
-                                        value="{{ old('NumberValue') }}" min="0" required>
-                                    @error('NumberValue')
+                                    <input type="number" class="form-control" id="number_value" name="number_value"
+                                        value="{{ old('number_value') }}" min="0" step="0.01">
+                                    @error('number_value')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
-                                <div id="logicFields" style="display: none;">
+                                <div id="behavioralFields" style="display: none;">
                                     <label>{{ __('Choose an option') }}</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="LogicOption"
-                                            id="logic_option_do" value="do">
-                                        <label class="form-check-label" for="logic_option_do">
+                                        <input class="form-check-input" type="radio" name="behavior_option"
+                                            id="behavior_option_do" value="1">
+                                        <label class="form-check-label" for="behavior_option_do">
                                             Do It
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="LogicOption"
-                                            id="logic_option_dont" value="dont">
-                                        <label class="form-check-label" for="logic_option_dont">
+                                        <input class="form-check-input" type="radio" name="behavior_option"
+                                            id="behavior_option_dont" value="0">
+                                        <label class="form-check-label" for="behavior_option_dont">
                                             Don't Do It
                                         </label>
                                     </div>
-                                    @error('LogicOption')
+                                    @error('behavior_option')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                                 <div id="timeFields" style="display: none;">
-                                    <label for="initial_duration">{{ __('Initial Duration (minutes)') }}</label>
-                                    <input type="number" class="form-control" id="initial_duration"
-                                        name="InitialDuration" value="{{ old('InitialDuration') }}" required>
-                                    @error('InitialDuration')
+                                    <label for="initial_time">{{ __('Initial Duration (minutes)') }}</label>
+                                    <input type="time" class="form-control" id="initial_time" name="initial_time"
+                                        value="{{ old('initial_time') }}">
+                                    @error('initial_time')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
 
-                                    <label for="target_duration">{{ __('Target Duration (minutes)') }}</label>
-                                    <input type="number" class="form-control" id="target_duration"
-                                        name="TargetDuration" value="{{ old('TargetDuration') }}" required>
-                                    @error('TargetDuration')
+                                    <label for="target_time">{{ __('Target Duration (minutes)') }}</label>
+                                    <input type="time" class="form-control" id="target_time" name="target_time"
+                                        value="{{ old('target_time') }}">
+                                    @error('target_time')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -144,16 +143,15 @@
                                         {{ __('You can create subobjectives for this goal later.') }}</p>
                                 </div>
                             </div>
-
-
+                            {{-- Importance --}}
                             <div class="mb-3">
                                 <label for="importance">{{ __('Importance') }}</label>
                                 <input type="range" class="form-range" min="1" max="5"
-                                    id="importance" name="Importance" value="{{ old('Importance') }}" required>
+                                    id="importance" name="importance" value="{{ old('importance') }}" required>
                                 <div class="text-center">
-                                    <span id="importanceValue">{{ old('Importance') ?: 'Choose imprtance' }}</span>
+                                    <span id="importanceValue">{{ old('importance') ?: 'Choose importance' }}</span>
                                 </div>
-                                @error('Importance')
+                                @error('importance')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -162,27 +160,44 @@
 
                             {{-- Start date --}}
                             <div class="mb-3">
-                                <label for="startDate">{{ __('Start Date') }}</label>
-                                <input type="date" class="form-control" id="startDate" name="DateStart"
-                                    value="{{ old('DateStart') }}" required>
-                                @error('DateStart')
+                                <label for="start_date">{{ __('Start Date') }}</label>
+                                <input type="date" class="form-control" id="start_date" name="start_date"
+                                    value="{{ old('start_date') }}" required>
+                                @error('start_date')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
 
                             {{-- Duree Estimee --}}
                             <div class="mb-3">
-                                <label for="dureeEstimee">{{ __('Estimated Duration') }}</label>
-                                <select class="form-select" id="dureeEstimee" name="DureeEstimee" required>
-                                    <option value="1_week">{{ __('1 week') }}</option>
-                                    <option value="2_weeks">{{ __('2 weeks') }}</option>
-                                    <option value="1_month">{{ __('1 month') }}</option>
-                                    <option value="2_months">{{ __('2 months') }}</option>
-                                    <option value="3_months">{{ __('3 months') }}</option>
-                                    <option value="6_months">{{ __('6 months') }}</option>
-                                    <option value="1_year">{{ __('1 year') }}</option>
+                                <label for="estimated_duration">{{ __('Estimated Duration') }}</label>
+                                <select class="form-select" id="estimated_duration" name="estimated_duration"
+                                    required>
+                                    <option value="1_week"
+                                        {{ old('estimated_duration') == '1_week' ? 'selected' : '' }}>
+                                        {{ __('1 week') }}</option>
+                                    <option value="2_weeks"
+                                        {{ old('estimated_duration') == '2_weeks' ? 'selected' : '' }}>
+                                        {{ __('2 weeks') }}
+                                    </option>
+                                    <option value="1_month"
+                                        {{ old('estimated_duration') == '1_month' ? 'selected' : '' }}>
+                                        {{ __('1 month') }}
+                                    </option>
+                                    <option value="2_months"
+                                        {{ old('estimated_duration') == '2_months' ? 'selected' : '' }}>
+                                        {{ __('2 months') }}</option>
+                                    <option value="3_months"
+                                        {{ old('estimated_duration') == '3_months' ? 'selected' : '' }}>
+                                        {{ __('3 months') }}</option>
+                                    <option value="6_months"
+                                        {{ old('estimated_duration') == '6_months' ? 'selected' : '' }}>
+                                        {{ __('6 months') }}</option>
+                                    <option value="1_year"
+                                        {{ old('estimated_duration') == '1_year' ? 'selected' : '' }}>
+                                        {{ __('1 year') }}</option>
                                 </select>
-                                @error('duree_estimee')
+                                @error('estimated_duration')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -191,25 +206,29 @@
 
                             {{-- End date --}}
                             <div class="mb-3">
-                                <label for="endDate">{{ __('End Date') }}</label>
-                                <input type="date" class="form-control" id="endDate" name="DateDeadline"
-                                    value="{{ old('DateDeadline') }}" required>
-                                @error('DateDeadline')
+                                <label for="end_date">{{ __('End Date') }}</label>
+                                <input type="date" class="form-control" id="end_date" name="end_date"
+                                    value="{{ old('end_date') }}" required>
+                                @error('end_date')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
 
                             {{-- planning --}}
                             <div class="mb-3">
-                                <label for="planning">{{ __('Planning') }}</label>
-                                <select class="form-select" id="planning" name="Planning"
-                                    onchange="showPlanningOptions(this.value)" required>
+                                <label for="planning_type_id">{{ __('Planning') }}</label>
+                                <select class="form-select" id="planning_type_id" name="planning_type_id"
+                                    onchange="showPlanningOptions(this.value)">
                                     <option value="" disabled selected>{{ __('Select Planning Type') }}</option>
-                                    <option value="daily">{{ __('Daily') }}</option>
-                                    <option value="weekly_multiple_times_a_week">{{ __('Weekly or multiple times a week') }}</option>
-                                    <option value="periodic">{{ __('Periodic') }}</option>
+                                    @foreach ($planningTypes as $tplan)
+                                        <option value="{{ $tplan->id }}"
+                                            {{ old('planning_type_id') == $tplan->id ? 'selected' : '' }}>
+                                            {{ $tplan->name }}
+                                        </option>
+                                    @endforeach
+
                                 </select>
-                                @error('Planning')
+                                @error('planning_type_id')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -219,37 +238,37 @@
                                     <label for="weeklyDays">{{ __('Select Weekly Days') }}</label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="monday"
-                                            name="weekly_days[]" value="monday">
+                                            name="selected_week_days[]" value="monday">
                                         <label class="form-check-label" for="monday">{{ __('Monday') }}</label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="tuesday"
-                                            name="weekly_days[]" value="tuesday">
+                                            name="selected_week_days[]" value="tuesday">
                                         <label class="form-check-label" for="tuesday">{{ __('Tuesday') }}</label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="wednesday"
-                                            name="weekly_days[]" value="wednesday">
+                                            name="selected_week_days[]" value="wednesday">
                                         <label class="form-check-label" for="wednesday">{{ __('Wednesday') }}</label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="thursday"
-                                            name="weekly_days[]" value="thursday">
+                                            name="selected_week_days[]" value="thursday">
                                         <label class="form-check-label" for="thursday">{{ __('Thursday') }}</label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="friday"
-                                            name="weekly_days[]" value="friday">
+                                            name="selected_week_days[]" value="friday">
                                         <label class="form-check-label" for="friday">{{ __('Friday') }}</label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="saturday"
-                                            name="weekly_days[]" value="saturday">
+                                            name="selected_week_days[]" value="saturday">
                                         <label class="form-check-label" for="saturday">{{ __('Saturday') }}</label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="sunday"
-                                            name="weekly_days[]" value="sunday">
+                                            name="selected_week_days[]" value="sunday">
                                         <label class="form-check-label" for="sunday">{{ __('Sunday') }}</label>
                                     </div>
                                 </div>
@@ -257,20 +276,20 @@
 
                             <div id="periodicOptions" style="display: none;">
                                 <div class="mb-3">
-                                    <label for="periodicDays">{{ __('Number of Days to Perform') }}</label>
-                                    <input type="number" class="form-control" id="periodicDays"
-                                        name="periodic_days" value="{{ old('periodic_days') }}" min="1"
-                                        required>
-                                    @error('periodic_days')
+                                    <label for="number_of_days">{{ __('Number of Days to Perform') }}</label>
+                                    <input type="number" class="form-control" id="number_of_days"
+                                        name="number_of_days" value="{{ old('number_of_days') }}" min="1">
+                                    @error('number_of_days')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="restDays">{{ __('Number of Rest Days') }}</label>
-                                    <input type="number" class="form-control" id="restDays" name="RestDays"
-                                        value="{{ old('RestDays') }}" min="0" required>
-                                    @error('RestDays')
+                                    <label for="number_of_rest_days">{{ __('Number of Rest Days') }}</label>
+                                    <input type="number" class="form-control" id="number_of_rest_days"
+                                        name="number_of_rest_days" value="{{ old('number_of_rest_days') }}"
+                                        min="0">
+                                    @error('number_of_rest_days')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -283,17 +302,17 @@
             </div>
         </div>
     </div>
-    {{-- Actions of type of goal --}}
+    {{-- Show the inputs depending on type of goal --}}
     <script>
         $(document).ready(function() {
             $("#objective_type").on("change", function() {
                 var selectedType = $(this).val();
-                $("#numberFields, #logicFields, #timeFields, #essentialFields").hide();
+                $("#numberFields, #behavioralFields, #timeFields, #essentialFields").hide();
 
                 if (selectedType === "number") {
                     $("#numberFields").show();
-                } else if (selectedType === "logic") {
-                    $("#logicFields").show();
+                } else if (selectedType === "behavioral") {
+                    $("#behavioralFields").show();
                 } else if (selectedType === "time") {
                     $("#timeFields").show();
                 } else if (selectedType === "essential") {
@@ -302,6 +321,26 @@
             });
         });
     </script>
+
+     {{-- planning --}}
+    <script>
+        function showPlanningOptions(selectedValue) {
+            const weeklyOptions = document.getElementById('weeklyOptions');
+            const periodicOptions = document.getElementById('periodicOptions');
+
+            if (selectedValue == 2) {
+                weeklyOptions.style.display = 'block';
+                periodicOptions.style.display = 'none';
+            } else if (selectedValue == 3) {
+                weeklyOptions.style.display = 'none';
+                periodicOptions.style.display = 'block';
+            } else {
+                weeklyOptions.style.display = 'none';
+                periodicOptions.style.display = 'none';
+            }
+        }
+    </script>
+
     {{-- Importance --}}
     <script>
         const importanceInput = document.getElementById('importance');
@@ -330,31 +369,14 @@
         }
     </script>
 
-    {{-- planning --}}
-    <script>
-        function showPlanningOptions(selectedValue) {
-            const weeklyOptions = document.getElementById('weeklyOptions');
-            const periodicOptions = document.getElementById('periodicOptions');
-
-            if (selectedValue === 'weekly') {
-                weeklyOptions.style.display = 'block';
-                periodicOptions.style.display = 'none';
-            } else if (selectedValue === 'periodic') {
-                weeklyOptions.style.display = 'none';
-                periodicOptions.style.display = 'block';
-            } else {
-                weeklyOptions.style.display = 'none';
-                periodicOptions.style.display = 'none';
-            }
-        }
-    </script>
+   
 
     {{-- Add estimated date to start date to give end date --}}
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const startDateInput = document.getElementById("startDate");
-            const estimatedDurationInput = document.getElementById("dureeEstimee");
-            const endDateInput = document.getElementById("endDate");
+            const startDateInput = document.getElementById("start_date");
+            const estimatedDurationInput = document.getElementById("estimated_duration");
+            const endDateInput = document.getElementById("end_date");
 
             function addMonths(date, months) {
                 const newDate = new Date(date);
@@ -399,9 +421,6 @@
                         case "1_year":
                             endDate = addYears(startDate, 1);
                             break;
-
-
-
                     }
 
                     endDateInput.valueAsDate = endDate;
@@ -412,6 +431,63 @@
             estimatedDurationInput.addEventListener("change", updateEndDate);
         });
     </script>
+
+    {{-- make fields required depending on the type of objective --}}
+    {{-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the select element and input fields
+            const objectiveTypeSelect = document.getElementById('objective_type');
+            const planningIdSelect = document.getElementById('planning_type_id');
+
+            const numberValueInput = document.getElementById('number_value');
+            const initialTimeInput = document.getElementById('initial_time');
+            const targetTimeInput = document.getElementById('target_time');
+            // const behaviorOptionDoInput = document.getElementById('behavior_option_do');
+            // const behaviorOptionDontInput = document.getElementById('behavior_option_dont');
+            const numberOfDaysInput = document.getElementById('number_of_days');
+            const numberOfRestDaysInput = document.getElementById('number_of_rest_days');
+            const numberOfRestDaysInput = document.getElementById('behavioral');
+
+            // Function to toggle the 'required' attribute on input fields
+            function toggleRequiredAttributes() {
+                const selectedObjectiveType = objectiveTypeSelect.value;
+                const selectedPlanningType = planningTypeSelect.value;
+
+                // Remove 'required' attribute from all fields
+                [numberValueInput, initialTimeInput, targetTimeInput, numberOfDaysInput, numberOfRestDaysInput]
+                .forEach(input => {
+                    input.removeAttribute('required');
+                });
+
+                // Add 'required' attribute to the appropriate field(s)
+                if (selectedObjectiveType === 'number') {
+                    numberValueInput.setAttribute('required', 'required');
+                } else  (selectedObjectiveType === 'time') {
+                    initialTimeInput.setAttribute('required', 'required');
+                    targetTimeInput.setAttribute('required', 'required');
+                }
+                //  else if (selectedObjectiveType === 'behavioral') {
+                //     behaviorOptionDoInput.setAttribute('required', 'required');
+                //     behaviorOptionDontInput.setAttribute('required', 'required');
+                // }
+
+                if (selectedPlanningType == 2) {
+                    numberOfDaysInput.setAttribute('required', 'required');
+                    numberOfRestDaysInput.setAttribute('required', 'required');
+
+                } else if (selectedPlanningType == 3) {
+                    numberOfDaysInput.setAttribute('required', 'required');
+                    numberOfRestDaysInput.setAttribute('required', 'required');
+                }
+            }
+
+            // Add an event listener to the select element to update 'required' attributes
+            objectiveTypeSelect.addEventListener('change', toggleRequiredAttributes);
+
+            // Initialize 'required' attributes based on the initial selected value
+            toggleRequiredAttributes();
+        });
+    </script> --}}
 
     <x-footer />
 </x-master>

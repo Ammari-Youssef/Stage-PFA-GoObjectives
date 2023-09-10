@@ -55,6 +55,9 @@ class AuthController extends Controller
             return redirect()->intended(route('dashboard'));
         }
 
+        // Once the user is authenticated, store their user ID in the session
+        session(['user_id' => auth()->user()->id]);
+
         return redirect()->route('auth.login')
             ->withErrors(["email_pwd" => "Email or password are invalid."])
             ->withInput($req->only('email', 'remember')); // Retain the email and "Remember Me" status

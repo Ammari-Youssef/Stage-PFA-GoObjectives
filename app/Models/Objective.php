@@ -9,18 +9,25 @@ class Objective extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'UserID',
-        'ObjectiveTitle',
-        'Description',
-        'CategoryID',
-        'DesiredResult',
-        'TypeID',
-        'isDone',
-        'DateStart',
-        'DateDeadline',
-        'Importance',
-        'DureeEstimee',
+        'title',
+        'description',
+        'desired_result',
+        'type',
+        'number_value',
+        'initial_time',
+        'target_time',
+        'behavior_option',
+        'importance',
+        'start_date',
+        'estimated_duration',
+        'end_date',
+        'is_done',
+        'user_id',
+        'objective_parent_id',
+        'category_id',
+        'planning_id',
     ];
+
 
 
 
@@ -47,10 +54,12 @@ class Objective extends Model
 
     public function results()
     {
-        
     }
 
-
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     public function planning()
     {

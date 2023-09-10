@@ -15,12 +15,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            CategorySeeder::class,
-            TypeObjectiveSeeder::class,
-            PlanningSeeder::class,
-            ObjectiveSeeder::class,
-            TaskSeeder::class,
-            ResultSeeder::class,
+            // CategorySeeder::class,
+            // TypeObjectiveSeeder::class,
+            // PlanningSeeder::class,
+            // ObjectiveSeeder::class,
+            // TaskSeeder::class,
+            // ResultSeeder::class,
             // LevelSeeder::class,
             // MotiveSeeder::class,
 

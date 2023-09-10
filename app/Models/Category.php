@@ -9,10 +9,14 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable= ['name'];
+    protected $fillable = ['name','description'];
 
     public function progress()
     {
         return $this->hasMany(Progress::class);
+    }
+    public function objectives()
+    {
+        return $this->hasMany(Objective::class);
     }
 }

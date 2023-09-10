@@ -20,10 +20,10 @@ return new class extends Migration
             $table->decimal('number_value', 10, 2)->nullable();
             $table->time('initial_time')->nullable();
             $table->time('target_time')->nullable();
-            $table->boolean('behavior_option')->nullable();
+            $table->boolean('behavior_option');
             $table->integer('importance');
             $table->date('start_date');
-            $table->string('estimated_date', 50);
+            $table->string('estimated_duration', 50);
             $table->date('end_date');
             $table->boolean('is_done')->default(false);
             $table->timestamps();

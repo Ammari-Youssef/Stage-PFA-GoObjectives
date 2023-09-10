@@ -6,23 +6,31 @@ use App\Http\Requests\StoreObjectiveRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Objective;
+use App\Models\Planning;
+use App\Models\PlanningType;
 use App\Models\TypeObjective;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 
 class ObjectiveController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
-        $userId = Auth::id();
+        $importanceLevels = [
+            1 => __('Low'),
+            2 => __('Moderate'),
+            3 => __('Normal'),
+            4 => __('High'),
+            5 => __('Very High'),];
 
-        $objectives = Objective::where('user_id', $userId)->get(); // Assuming you have an 'Objective' model
+        $objectives = Objective::where('user_id', Auth::id())->get(); 
         // dd($objectives);
-        return view('objective.index', compact('objectives'));
+        return view('objective.index', compact('objectives','importanceLevels'));
     }
 
     /**
@@ -32,13 +40,12 @@ class ObjectiveController extends Controller
     {
         //
         $categories = Category::all();
-        $TypeObjective = [
-            "number" , "time" , "essential" , "behavioral" ,  
-        ];
+        $planningTypes = PlanningType::all();
+        dump([
+           "type of plans"=> $planningTypes,
+        ]);
 
-        // dd($categories);
-
-        return view('objective.create', compact('categories'));
+        return view('objective.create', compact('categories','planningTypes'));
     }
 
     /**
@@ -49,50 +56,39 @@ class ObjectiveController extends Controller
         // Get the validated data from the request
         $validatedData = $request->validated();
 
-        // Handle logic based on the selected Type and PlanningType
-        if ($validatedData['Type'] === 'essential') {
-            // Handle essential type objectives
-            // You can set additional fields or perform specific actions
-            $validatedData['PlanningType'] = 'none'; // Set PlanningType to "none" for essential objectives
-            $validatedData['PlanningDays'] = null;
-            $validatedData['RestDays'] = null;
-        } elseif ($validatedData['Type'] === 'number') {
-            // Handle number type objectives
-            // You can set additional fields or perform specific actions
-            $validatedData['PlanningType'] = 'none'; // Set PlanningType to "none" for number objectives
-            $validatedData['PlanningDays'] = null;
-            $validatedData['RestDays'] = null;
-        } elseif ($validatedData['Type'] === 'logic') {
-            // Handle logic type objectives
-            // You can set additional fields or perform specific actions
-            $validatedData['PlanningType'] = 'none'; // Set PlanningType to "none" for logic objectives
-            $validatedData['PlanningDays'] = null;
-            $validatedData['RestDays'] = null;
-        } elseif ($validatedData['Type'] === 'time') {
-            // Handle time type objectives
-            if ($validatedData['PlanningType'] === 'daily') {
-                // Handle daily planning
-            } elseif ($validatedData['PlanningType'] === 'weekly') {
-                // Handle weekly planning
-                // You may need to save the selected weekdays in the database
-                // $validatedData['WeeklyDays'] will contain an array of selected days
-            } elseif ($validatedData['PlanningType'] === 'periodic') {
-                // Handle periodic planning
-            }
+
+        $planningTypeId= $request->input('planning_type_id');
+        // Create Planning record based on planning_type_id
+        $planningData = [
+           
+            'planning_type_id' => $planningTypeId,
+        ];
+        // Retrieve the associated planning type based on the provided ID
+        $planningType = PlanningType::find($planningTypeId);
+
+        if ($planningType && $planningType->name === 'weekly or multiple times a week') {
+            $planningData['selected_week_days'] = $request->input('selected_week_days');
+        } elseif ($planningType && $planningType->name === 'periodic') {
+            $planningData['number_of_days'] = $request->input('number_of_days');
+            $planningData['number_of_rest_days'] = $request->input('number_of_rest_days');
         }
-        //inserer
-        // if($validatedData['Category']==="autre"){
-
-        //     // Category::create($validatedData);
-        //     $id_category= ->id;
-        // }
         
-        // Create the objective in the database
-        Objective::create($validatedData);
-
-        // Redirect back with success message
-        return redirect()->route('objectives.index')->with('success', 'Objective created successfully.');
+        $planning = Planning::create($planningData);
+        
+        // Now that you have the planning record, you can use its ID for the objective
+        $objectiveData = array_merge($validatedData, ['planning_id' => $planning->id ,'user_id' => Auth::id()]);
+        
+        $objective = Objective::create($objectiveData);
+        
+        // dd([
+        //     '$planningData'=>$planningData,
+        //     "obj data" => $objectiveData
+        // ]);
+        // Redirect to a success page or return a response as needed
+        return redirect()->route('objective.index')->with('success', 'Objective created successfully.');
     }
+
+
 
     /**
      * Display the specified resource.
@@ -110,7 +106,7 @@ class ObjectiveController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        
     }
 
     /**
@@ -118,7 +114,7 @@ class ObjectiveController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
     }
 
     /**
@@ -129,19 +125,18 @@ class ObjectiveController extends Controller
         //
     }
 
-    //result 
-    public function completeObjective(Objective $objective)
+    public function toggleStatus(Objective $objective)
     {
-        // Perform any logic related to completing the objective
-        // ...
+        try {
+            // Toggle the 'is_done' status
+            $objective->update(['is_done' => !$objective->is_done]);
 
-        // Create a result for the completed objective
-        $objective->results()->create([
-            'value' => 'Some result value',
-            // ... other columns ...
-        ]);
+            // Redirect back to the index page with a success message
+            return response()->json(['message' => 'Status toggled successfully']);
 
-        // Redirect or return a response
-        // ...
+        } catch (\Exception $e) {
+            // Handle any exceptions that may occur
+            return response()->json(['message' => 'Failed to toggle objective status']);
+        }
     }
 }
