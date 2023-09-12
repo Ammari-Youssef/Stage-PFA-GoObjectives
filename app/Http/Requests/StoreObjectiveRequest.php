@@ -26,8 +26,8 @@ class StoreObjectiveRequest extends FormRequest
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'desired_result' => 'required|in:1,0',
-            'type' => 'required|in:number,time,behavioral',
-            'number_value' => 'required_if:type,number|numeric|min:0',
+            'type' => 'required|in:number,time,behavioral,essential',
+            'number_value' => 'required_if:type,number|min:0',
             'behavior_option' => 'required_if:type,behavioral|in:1,0',
             'initial_time' => 'required_if:type,time',
             'target_time' => 'required_if:type,time',
@@ -36,9 +36,9 @@ class StoreObjectiveRequest extends FormRequest
             'estimated_duration' => 'required|in:1_week,2_weeks,1_month,2_months,3_months,6_months,1_year',
             'end_date' => 'required|date',
             'planning_type_id' => 'required|integer|exists:planning_types,id', //verifier plannings_id exist dans la table planning_type sous colonne id
-            'selected_week_days' => 'required_if:planning_type_id,weekly or multiple times a week|array',
-            'number_of_days' => 'required_if:planning_type_id,periodic|integer|min:1',
-            'number_of_rest_days' => 'required_if:planning_type_id,periodic|integer|min:0',
+            'selected_week_days' => 'required_if:planning_type_id,2|array',
+            'number_of_days' => 'required_if:planning_type_id,3',
+            'number_of_rest_days' => 'required_if:planning_type_id,3|min:0',
    
         ];
     }

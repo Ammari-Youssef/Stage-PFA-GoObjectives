@@ -19,6 +19,9 @@
                     <div class="card-body">
                         <form action="{{ route('objective.store') }}" method="POST">
                             @csrf
+                            {{-- In case the objective is sub-target --}}
+                            <input type="hidden" name="objective_parent_id" value="{{ $objective_parent_id ?? null }}">
+
                             {{-- Title --}}
                             <div class="mb-3">
                                 <label for="title">{{ __('Objective Title') }}</label>
@@ -43,7 +46,8 @@
                                     <option value="" disabled selected>{{ __('Select a category') }}</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}"
-                                            {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ old('category_id') == $category->id ? 'selected' : '' }}
+                                            title="{{ $category->description }}">
                                             {{ $category->name }}
                                         </option>
                                     @endforeach
@@ -76,17 +80,25 @@
                             {{-- Type goal --}}
                             <div class="mb-3">
                                 <label for="objective_type">{{ __('Type of Objective') }}</label>
-                                <select class="form-select" id="objective_type" name="type" required>
+                                <select class="form-select" id="objective_type" name="type">
                                     <option value="" disabled selected>Choose Nature of Objective</option>
                                     <div class="form-group">
 
-                                        <option value="number">Number</option>
-                                        <option value="time">Time</option>
-                                        <option value="behavioral">Behavioral (Logic)</option>
+                                        <option value="number" {{ old('type') == 'number' ? 'selected' : '' }}>
+                                            {{ __('Number') }}
+                                        </option>
+                                        <option value="time" {{ old('type') == 'time' ? 'selected' : '' }}>
+                                            {{ __('Time') }}
+                                        </option>
+                                        <option value="behavioral" {{ old('type') == 'behavioral' ? 'selected' : '' }}>
+                                            {{ __('Behavioral (Logic)') }}</option>
+                                        <option value="essential" {{ old('type') == 'essential' ? 'selected' : '' }}>
+                                            {{ __('Essential') }} </option>
+
 
                                     </div>
                                 </select>
-                                @error('type_id')
+                                @error('type')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -105,14 +117,16 @@
                                     <label>{{ __('Choose an option') }}</label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="behavior_option"
-                                            id="behavior_option_do" value="1">
+                                            id="behavior_option_do" value="1"
+                                            {{ old('behavior_option') == 1 ? 'checked' : '' }}>
                                         <label class="form-check-label" for="behavior_option_do">
                                             Do It
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="behavior_option"
-                                            id="behavior_option_dont" value="0">
+                                            id="behavior_option_dont" value="0"
+                                            {{ old('behavior_option') == 0 ? 'checked' : '' }}>
                                         <label class="form-check-label" for="behavior_option_dont">
                                             Don't Do It
                                         </label>
@@ -238,37 +252,44 @@
                                     <label for="weeklyDays">{{ __('Select Weekly Days') }}</label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="monday"
-                                            name="selected_week_days[]" value="monday">
+                                            name="selected_week_days[]" value="monday"
+                                            {{ in_array('monday', old('selected_week_days', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="monday">{{ __('Monday') }}</label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="tuesday"
-                                            name="selected_week_days[]" value="tuesday">
+                                            name="selected_week_days[]" value="tuesday"
+                                            {{ in_array('tuesday', old('selected_week_days', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="tuesday">{{ __('Tuesday') }}</label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="wednesday"
-                                            name="selected_week_days[]" value="wednesday">
+                                            name="selected_week_days[]" value="wednesday"
+                                             {{ in_array('wednesday', old('selected_week_days', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="wednesday">{{ __('Wednesday') }}</label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="thursday"
                                             name="selected_week_days[]" value="thursday">
-                                        <label class="form-check-label" for="thursday">{{ __('Thursday') }}</label>
+                                        <label class="form-check-label" for="thursday"
+                                         {{ in_array('thursday', old('selected_week_days', [])) ? 'checked' : '' }}>{{ __('Thursday') }}</label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="friday"
-                                            name="selected_week_days[]" value="friday">
+                                            name="selected_week_days[]" value="friday"
+                                             {{ in_array('friday', old('selected_week_days', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="friday">{{ __('Friday') }}</label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="saturday"
-                                            name="selected_week_days[]" value="saturday">
+                                            name="selected_week_days[]" value="saturday"
+                                             {{ in_array('saturday', old('selected_week_days', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="saturday">{{ __('Saturday') }}</label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="sunday"
-                                            name="selected_week_days[]" value="sunday">
+                                            name="selected_week_days[]" value="sunday"
+                                             {{ in_array('sunday', old('selected_week_days', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="sunday">{{ __('Sunday') }}</label>
                                     </div>
                                 </div>
@@ -322,7 +343,7 @@
         });
     </script>
 
-     {{-- planning --}}
+    {{-- planning --}}
     <script>
         function showPlanningOptions(selectedValue) {
             const weeklyOptions = document.getElementById('weeklyOptions');
@@ -369,7 +390,7 @@
         }
     </script>
 
-   
+
 
     {{-- Add estimated date to start date to give end date --}}
     <script>

@@ -8,14 +8,12 @@ use Illuminate\Http\Request;
 use App\Models\Objective;
 use App\Models\Planning;
 use App\Models\PlanningType;
-use App\Models\TypeObjective;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-
+use PhpParser\Node\Expr\Cast\Object_;
 
 class ObjectiveController extends Controller
 {
-    
+
     /**
      * Display a listing of the resource.
      */
@@ -26,26 +24,29 @@ class ObjectiveController extends Controller
             2 => __('Moderate'),
             3 => __('Normal'),
             4 => __('High'),
-            5 => __('Very High'),];
+            5 => __('Very High'),
+        ];
 
-        $objectives = Objective::where('user_id', Auth::id())->get(); 
+        $objectives = Objective::where('user_id', Auth::id())->get();
         // dd($objectives);
-        return view('objective.index', compact('objectives','importanceLevels'));
+        return view('objective.index', compact('objectives', 'importanceLevels'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
+    public function create(Objective $objective,Request $request)
+{
+    $objective_parent_id = $request->input('objective_parent_id'); 
+       
         $categories = Category::all();
         $planningTypes = PlanningType::all();
         dump([
-           "type of plans"=> $planningTypes,
+            "type of plans" => $planningTypes,
+            "parent id " => $objective_parent_id,
         ]);
 
-        return view('objective.create', compact('categories','planningTypes'));
+        return view('objective.create', compact('objective','objective_parent_id','categories', 'planningTypes'));
     }
 
     /**
@@ -57,10 +58,10 @@ class ObjectiveController extends Controller
         $validatedData = $request->validated();
 
 
-        $planningTypeId= $request->input('planning_type_id');
+        $planningTypeId = $request->input('planning_type_id');
         // Create Planning record based on planning_type_id
         $planningData = [
-           
+
             'planning_type_id' => $planningTypeId,
         ];
         // Retrieve the associated planning type based on the provided ID
@@ -72,17 +73,25 @@ class ObjectiveController extends Controller
             $planningData['number_of_days'] = $request->input('number_of_days');
             $planningData['number_of_rest_days'] = $request->input('number_of_rest_days');
         }
-        
+
         $planning = Planning::create($planningData);
-        
+
         // Now that you have the planning record, you can use its ID for the objective
-        $objectiveData = array_merge($validatedData, ['planning_id' => $planning->id ,'user_id' => Auth::id()]);
-        
-        $objective = Objective::create($objectiveData);
-        
+        $objectiveData = array_merge($validatedData, ['planning_id' => $planning->id, 'user_id' => Auth::id()]);
+
+        $mainObjective = Objective::create($objectiveData);
+        $parentObjectiveId = $request->input('objective_parent_id');
+
+        if ($parentObjectiveId) {
+            $parentObjective = Objective::findOrFail($parentObjectiveId);
+            $mainObjective->parentObjective()->associate($parentObjective);
+            $mainObjective->save();
+        }
+
         // dd([
         //     '$planningData'=>$planningData,
-        //     "obj data" => $objectiveData
+        //     "obj data" => $objectiveData,
+        //     $validatedData
         // ]);
         // Redirect to a success page or return a response as needed
         return redirect()->route('objective.index')->with('success', 'Objective created successfully.');
@@ -93,12 +102,52 @@ class ObjectiveController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Objective $objective)
     {
-        //
-        $objective = Objective::findOrFail($id); // Assuming 'Objective' is your model
+        // Load the subobjectives related to the main objective
+        $subobjectives = Objective::where('objective_parent_id', $objective->id)->get();
 
-        return view('objective.show', compact('objective'));
+        $targetTime = $objective->target_time;
+        $hours = date('H', strtotime($targetTime));
+        $minutes = date('i', strtotime($targetTime));
+        $seconds = date('s',strtotime($targetTime) );
+        if ($hours > 0) {
+            $formattedTime = $hours . ' ' . __('hour');
+            if ($hours > 1) {
+                $formattedTime .= 's';
+            }
+
+            if ($minutes > 0) {
+                $formattedTime .= ' ' . $minutes . ' ' . __('minute');
+                if ($minutes > 1) {
+                    $formattedTime .= 's';
+                }
+            }
+            if ($seconds > 0) {
+                if ($formattedTime !== '') {
+                    $formattedTime .= ' ';
+                }
+                $formattedTime .= $seconds . ' ' . __('second');
+                if ($seconds > 1) {
+                    $formattedTime .= 's';
+                }
+            }
+        } elseif ($minutes > 0) {
+            $formattedTime = $minutes . ' ' . __('minute');
+            if ($minutes > 1) {
+                $formattedTime .= 's';
+            }
+        } else {
+            $formattedTime = __('No time specified');
+        }
+
+
+
+        dump([
+            'objective' => $objective,
+            'sub goals' => $subobjectives,
+        ]);
+        return view('objective.show', compact('objective', 'subobjectives','formattedTime'));
     }
 
     /**
@@ -106,7 +155,6 @@ class ObjectiveController extends Controller
      */
     public function edit(string $id)
     {
-        
     }
 
     /**
@@ -114,15 +162,18 @@ class ObjectiveController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Objective $objective)
     {
-        //
+        // Delete the objective
+        $objective->delete();
+
+        return redirect()->route('objective.index')->with('success', 'Objective deleted successfully.');
+
     }
 
     public function toggleStatus(Objective $objective)
@@ -132,8 +183,7 @@ class ObjectiveController extends Controller
             $objective->update(['is_done' => !$objective->is_done]);
 
             // Redirect back to the index page with a success message
-            return response()->json(['message' => 'Status toggled successfully']);
-
+            return response()->json(['message' => 'Status toggled successfully', 'is_done' => $objective->is_done]);
         } catch (\Exception $e) {
             // Handle any exceptions that may occur
             return response()->json(['message' => 'Failed to toggle objective status']);

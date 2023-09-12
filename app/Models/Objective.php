@@ -34,12 +34,12 @@ class Objective extends Model
     // Define the relationship with the User model
     public function user()
     {
-        return $this->belongsTo(User::class, 'UserID');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function tasks()
     {
-        return $this->hasMany(Task::class, 'ObjectiveID');
+        return $this->hasMany(Task::class, 'objective_id');
     }
 
     public function levels()
@@ -47,7 +47,7 @@ class Objective extends Model
         return $this->belongsToMany(Level::class, 'level_objective', 'objective_id', 'level_id');
     }
 
-    public function Motives()
+    public function motive()
     {
         return $this->hasMany(Motive::class);
     }
@@ -68,12 +68,12 @@ class Objective extends Model
 
     public function subobjectives()
     {
-        return $this->hasMany(Objective::class, 'parent_id');
+        return $this->hasMany(Objective::class, 'objective_parent_id');
     }
 
     // Relationship: An objective belongs to a parent objective
     public function parentObjective()
     {
-        return $this->belongsTo(Objective::class, 'parent_id');
+        return $this->belongsTo(Objective::class, 'objective_parent_id');
     }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('objectives', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->boolean('desired_result');
             $table->string('type');
             $table->decimal('number_value', 10, 2)->nullable();

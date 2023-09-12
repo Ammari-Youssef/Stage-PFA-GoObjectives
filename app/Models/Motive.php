@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Motive extends Model
 {
     use HasFactory;
-    protected $fillable = ['ObjectiveID', 'MotiveType', 'MotiveTitle', 'MotiveDescription'];
+    protected $fillable = ['objective_id', 'type', 'title', 'description'];
 
     public function objective()
     {
-        return $this->belongsTo(Objective::class);
+        return $this->belongsTo(Objective::class,'objective_id');
     }
 }
