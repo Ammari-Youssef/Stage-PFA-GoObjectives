@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Objectives;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -39,7 +39,7 @@ class StoreObjectiveRequest extends FormRequest
             'selected_week_days' => 'required_if:planning_type_id,2|array',
             'number_of_days' => 'required_if:planning_type_id,3',
             'number_of_rest_days' => 'required_if:planning_type_id,3|min:0',
-   
+
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreObjectiveRequest;
+use App\Http\Requests\Objectives\StoreObjectiveRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Objective;
@@ -143,25 +143,66 @@ class ObjectiveController extends Controller
 
 
 
-        dump([
-            'objective' => $objective,
-            'sub goals' => $subobjectives,
-        ]);
+        // dump([
+        //     'objective' => $objective,
+        //     'sub goals' => $subobjectives,
+        // ]);
         return view('objective.show', compact('objective', 'subobjectives','formattedTime'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Objective $objective, Request $request)
     {
-    }
+        $objective_parent_id = $request->input('objective_parent_id');
 
+        $categories = Category::all();
+        $planningTypes = PlanningType::all();
+        dump([
+            "type of plans" => $planningTypes,
+            "parent id " => $objective_parent_id,
+        ]);
+
+        return view('objective.edit', compact('objective', 'objective_parent_id', 'categories', 'planningTypes'));
+    }
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreObjectiveRequest $request, $id)
     {
+        // Get the validated data from the request
+        $validatedData = $request->validated();
+
+        $objective = Objective::findOrFail($id);
+
+        // Update the existing objective with the new data
+        $objective->update($validatedData);
+
+        // Update related planning data based on planning_type_id (similar to the store method)
+        $planningTypeId = $request->input('planning_type_id');
+
+        // Retrieve the associated planning record based on the provided ID
+        $planning = Planning::where('id', $objective->planning_id)->first();
+
+        if ($planning) {
+            // Update the planning data based on $planningTypeId
+            $planningData = ['planning_type_id' => $planningTypeId];
+            $planningType = PlanningType::find($planningTypeId);
+            
+            if ($planningType && $planningType->name === 'weekly or multiple times a week') {
+                $planningData['selected_week_days'] = $request->input('selected_week_days');
+            } elseif ($planningType && $planningType->name === 'periodic') {
+                $planningData['number_of_days'] = $request->input('number_of_days');
+                $planningData['number_of_rest_days'] = $request->input('number_of_rest_days');
+            }
+
+            $planning->update($planningData);
+        }
+
+
+        // Redirect to a success page or return a response as needed
+        return redirect()->route('objective.index')->with('success', 'Objective updated successfully.');
     }
 
     /**

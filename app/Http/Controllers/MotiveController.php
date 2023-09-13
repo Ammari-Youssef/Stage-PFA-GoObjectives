@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Motives\StoreRequest;
 use App\Models\Motive;
 use App\Models\Objective;
 use Illuminate\Http\Request;
@@ -24,49 +25,44 @@ class MotiveController extends Controller
     {
         $objectiveId = $request->input('objective_id');
 
-        return view('motive.create',["ObjectiveId"=> $objectiveId]);
+        return view('motive.create', compact('objectiveId'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
 
-        $request->validate([
-            'ObjectiveID' => 'required|exists:objectives,id',
-            'MotiveType' => 'required|string|max:255',
-            'MotiveTitle' => 'required|string|max:255',
-            'MotiveDescription' => 'required|string',
-        ]);
-
+        $validateData = $request->validated();
+        // dd($validateData);
         Motive::create([
-            'ObjectiveID' => $request->ObjectiveID,
-            'MotiveType' => $request->MotiveType,
-            'MotiveTitle' => $request->MotiveTitle,
-            'MotiveDescription' => $request->MotiveDescription,
+            'objective_id' => $request->objective_id,
+            'type' => $request->type,
+            'title' => $request->title,
+            'description' => $request->description,
         ]);
 
-        return redirect()->route('objective.index')
-        ->with('success', 'Motive created successfully.');
+        return redirect()->route('objective.show', ['objective' => $request->objective_id])
+            ->with('success', 'Motive created successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Motive $motive)
     {
         //
-        return view('motive.show');
+        return view('motive.show' , compact('motive'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Motive $motive)
     {
         //
-        return view('motive.edit');
+        return view('motive.edit', compact('motive'));
     }
 
     /**
@@ -75,15 +71,15 @@ class MotiveController extends Controller
     public function update(Request $request, Motive $motive)
     {
         $validatedData = $request->validate([
-            'MotiveType' => 'required|in:reason,reward,penalty',
-            'MotiveTitle' => 'required|string|max:255',
-            'MotiveDescription' => 'required|string',
+            'type' => 'required|in:reason,reward,penalty',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
         ]);
 
         $motive->update([
-            'MotiveType' => $validatedData['MotiveType'],
-            'MotiveTitle' => $validatedData['MotiveTitle'],
-            'MotiveDescription' => $validatedData['MotiveDescription'],
+            'type' => $validatedData['type'],
+            'title' => $validatedData['title'],
+            'description' => $validatedData['description'],
         ]);
 
         return redirect()->route('motive.show', $motive->id)
@@ -94,13 +90,13 @@ class MotiveController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-   
+
     public function destroy(Motive $motive)
     {
+        // Delete the motive
         $motive->delete();
 
-        return redirect()->route('objective.show', $motive->ObjectiveID)
-            ->with('success', __('Motive deleted successfully.'));
-    
+        return response()->json(['message' => 'Motive deleted successfully' , 'motive_id'=>$motive->id]);
     }
+
 }

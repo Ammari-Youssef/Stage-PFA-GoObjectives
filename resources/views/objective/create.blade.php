@@ -137,14 +137,14 @@
                                 </div>
 
                                 <div id="timeFields" style="display: none;">
-                                    <label for="initial_time">{{ __('Initial Duration (minutes)') }}</label>
+                                    <label for="initial_time">{{ __('Initial Duration ') }}</label>
                                     <input type="time" class="form-control" id="initial_time" name="initial_time"
                                         value="{{ old('initial_time') }}">
                                     @error('initial_time')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
 
-                                    <label for="target_time">{{ __('Target Duration (minutes)') }}</label>
+                                    <label for="target_time">{{ __('Target Duration ') }}</label>
                                     <input type="time" class="form-control" id="target_time" name="target_time"
                                         value="{{ old('target_time') }}">
                                     @error('target_time')
@@ -316,7 +316,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">{{ __('Create Objective') }}</button>
+                            <button type="submit" class="btn btn-primary">{{ __('Add Objective') }} <i class="fa-solid fa-plus"></i></button>
                         </form>
                     </div>
                 </div>

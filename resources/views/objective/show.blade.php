@@ -1,6 +1,11 @@
 <x-master title="{{ __('Objective details') }}">
     <x-navbar />
     <div class="container">
+        @if (session('success'))
+            <div class="alert alert-success text-center">
+                {{ session('success') }}
+            </div>
+        @endif
         <h1>{{ __('Objective Details') }}</h1>
 
         <div class="card">
@@ -8,12 +13,13 @@
                 <h5 class="card-title">{{ $objective->title }}</h5>
                 <p class="card-text"><strong>{{ __('Description') }}:</strong>
                     @if ($objective->description)
-                        {{ $objective->description }}
+                        {{ Str::ucfirst($objective->description) }}
                     @else
                         {{ __('No description available') }}
                     @endif
                 </p>
                 <p class="card-text"><strong>{{ __('Category') }}:</strong> {{ $objective->category->name }}</p>
+                <p class="card-text"><strong>{{ __('Type') }}:</strong> {{ Str::ucfirst($objective->type) }}</p>
 
                 <p class="card-text"><strong>{{ __('Current Goal') }}:</strong>
                     @if ($objective->type === 'number')
@@ -29,16 +35,51 @@
                 <hr>
 
                 <h5 class="card-title">{{ __('Additional Details') }}</h5>
-                <p class="card-text"><strong>{{ __('Motives') }}:</strong>
-                    @if ($objective->motive->count() > 0)
-                        {{ $objective->motive->count() }}
-                    @else
-                        <div class="alert alert-info" role="alert">
-                            {{ __('No motives available') }} <a
-                                href="{{ route('motive.create') }}">{{ __('Add a motive') }}</a>
+                <p class="card-text"><strong>{{ __('Motives') }}: {{ $objective->motive->count() }}</strong> </p>
+                @if ($objective->motive->count() > 0)
+                    @foreach ($objective->motive as $motive)
+                        <!-- Display motive details -->
+                        <p data-motive-id="{{ $motive->id }}">
+                        <div class="col-6">{{ $motive->title }}</div>
+
+                        <div class="col-6">
+                            <!-- Add a "View" button that links to the motive's details page -->
+                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#motiveDetailsModal" title="View">
+                                <i class="fas fa-eye"></i>
+                            </button>
+
+                            <!-- Include the motive details modal component -->
+                            <x-motive.show-motive-details :motive="$motive" />
+
+                            <!-- Add an "Edit" button that links to the motive's edit page -->
+                            <a href="{{ route('motive.edit', ['motive' => $motive->id]) }}"
+                                class="btn btn-sm btn-warning" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+
+                            <!-- Add a "Delete" button that triggers a delete confirmation modal -->
+                            <button class="btn btn-sm btn-danger" data-motive-id="{{ $motive->id }}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                            <form method="POST" action="{{ route('motive.destroy', ['motive' => $motive->id]) }}"
+                                id="delete-form-{{ $motive->id }}">
+                                @csrf
+                                @method('DELETE')
+                            </form>
                         </div>
-                    @endif
+
+                        </p>
+                    @endforeach
+                @else
+                    <div class="alert alert-info" role="alert">
+                        {{ __('No motives available') }}
+                    </div>
+                @endif
+                 <a class="btn btn-primary"
+                            href="{{ route('motive.create', ['objective_id' => $objective->id]) }}">{{ __('Add Motive') }}</a>
                 </p>
+
 
                 <p class="card-text"><strong>{{ __('Level') }}:</strong>
                     @if ($objective->level)
@@ -75,7 +116,7 @@
                 @endif
 
 
-                <p class="card-text"><strong>{{ __('Tasks') }}:</strong></p>
+                <p class="card-text"><strong>{{ __('Tasks') }}: {{$objective->tasks->count()}} </strong></p>
                 @if ($objective->tasks->count() > 0)
                     <ul>
                         @foreach ($objective->tasks as $task)
@@ -87,7 +128,7 @@
                         {{ __('No tasks available') }}
                     </div>
                 @endif
-                <button class="btn btn-primary" id="addTask">{{ __('Add Task') }}</button>
+                <button class="btn btn-primary" id="addTask" >{{ __('Add Task') }}</button>
 
 
 
@@ -98,7 +139,7 @@
                         <div class="alert alert-info" role="alert">
                             {{ __('No result available') }}
                         </div>
-                        <a href="{{ route('task.create') }}"  class="btn btn-primary">{{ __('Add result') }}</a>
+                        <a href="{{ route('task.create') }}" class="btn btn-primary">{{ __('Add result') }}</a>
                     @endif
                 </p>
 
@@ -108,3 +149,44 @@
 
     <x-footer />
 </x-master>
+
+<script>
+    // Function to handle AJAX delete
+    function deleteMotive(motiveId) {
+
+        $.ajax({
+            type: 'DELETE',
+            url: '{{ route('motive.destroy', '') }}/' + motiveId,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), // Add CSRF token
+            },
+            success: function() {
+                // On success, remove the motive element from the page
+                $(`p[data-motive-id="${motiveId}"]`).remove();
+                Swal.fire('Deleted', 'The motive has been deleted successfully.', 'success');
+                window.location.reload();
+            },
+            error: function() {
+                Swal.fire('Error', 'An error occurred while deleting the motive.', 'error');
+            },
+        });
+    }
+
+    // Handle delete button clicks
+    $('button.btn-danger').on('click', function() {
+        const motiveId = $(this).data('motive-id');
+        Swal.fire({
+            title: 'Confirm Deletion',
+            text: 'Are you sure you want to delete this motive ?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteMotive(motiveId);
+            }
+        });
+    });
+</script>
