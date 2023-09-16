@@ -34,27 +34,41 @@
                     </thead>
                     <tbody>
                         @foreach ($objectives as $i => $objective)
-                            <tr class="{{ $objective->is_done ? 'text-decoration-line-through' : '' }}"
-                                data-is-done="{{ $objective->is_done ? '1' : '0' }}">
+                            <tr data-is-done="{{ $objective->is_done ? '1' : '0' }}">
                                 <!-- Rest of your existing code for displaying objective details -->
-                                <td>{{ $i + 1 }}</td>
-                                <td>{{ $objective->title }}</td>
-                                <td>{{ $objective->category->name }}</td>
-                                <td>{{ $objective->start_date }}</td>
-                                <td>{{ $objective->end_date }}</td>
-                                <td>{{ $importanceLevels[$objective->importance] }}</td>
-                                <td id="statusCell_{{ $objective->id }}">
+                                <td
+                                    class="{{ $objective->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
+                                    {{ $i + 1 }}</td>
+                                <td
+                                    class="{{ $objective->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
+                                    {{ $objective->title }}</td>
+                                <td
+                                    class="{{ $objective->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
+                                    {{ $objective->category->name }}</td>
+                                <td
+                                    class="{{ $objective->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
+                                    {{ $objective->start_date }}</td>
+                                <td
+                                    class="{{ $objective->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
+                                    {{ $objective->end_date }}</td>
+                                <td
+                                    class="{{ $objective->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
+                                    {{ $importanceLevels[$objective->importance] }}</td>
+                                <td class="{{ $objective->is_done ? 'text-decoration-line-through text-black-50' : '' }}"
+                                    id="statusCell_{{ $objective->id }}">
                                     @if ($objective->is_done)
-                                        <span class="text-success">✓ {{ __('Completed') }}</span>
+                                        <span class="badge bg-success">✓ {{ __('Done') }}</span>
                                     @else
-                                        <span class="text-danger">✗ {{ __('Incomplete') }}</span>
+                                        <span class="badge bg-danger">✗ {{ __('Not Done') }}</span>
                                     @endif
                                 </td>
-                                <td>
+                                <td class="{{ $objective->is_done ? '' : '' }}">
 
-                                    <button class="btn btn-primary btn-sm toggle-status"
+                                    <button
+                                        class="btn btn-sm toggle-status {{ $objective->is_done ? 'btn-success' : 'btn-secondary' }}"
                                         data-objective="{{ $objective->id }}">
-                                        <i class="fas fa-toggle-on"></i>
+                                        <i
+                                            class="fa-regular {{ $objective->is_done ? 'fa-thumbs-up' : 'fa-thumbs-down' }}"></i>
                                     </button>
 
                                     <a href="{{ route('objective.show', ['objective' => $objective->id]) }}"
@@ -69,8 +83,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="button" class="btn btn-danger btn-sm delete-objective"
-                                            title="{{ __('Delete') }}"
-                                             data-objective-id="{{ $objective->id }}" 
+                                            title="{{ __('Delete') }}" data-objective-id="{{ $objective->id }}"
                                             onclick="confirmDelete('{{ route('objective.destroy', ['objective' => $objective->id]) }}')">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
@@ -125,10 +138,12 @@
 {{-- Toggle completion --}}
 <script>
     $(document).ready(function() {
+
+
         $('.toggle-status').click(function() {
             var objectiveId = $(this).data('objective');
             var token = $('meta[name="csrf-token"]').attr(
-            'content'); // Get the CSRF token from the meta tag
+                'content'); // Get the CSRF token from the meta tag
 
             $.ajax({
                 type: 'POST',
@@ -141,17 +156,27 @@
                     // You can add logic here to visually update the status in the table
 
                     console.log(response);
+                    const $statusButton = $('.toggle-status[data-objective="' +
+                        objectiveId + '"]');
                     const $statusCell = $('#statusCell_' + objectiveId);
                     const $tableRow = $statusCell.closest('tr');
 
                     if (response.is_done) {
-                        $statusCell.html('<span class="text-success">✓ Completed</span>');
+                        $statusButton.removeClass('btn-secondary').addClass('btn-success');
+                        $statusButton.find('i').removeClass('fa-thumbs-down').addClass(
+                            'fa-thumbs-up');
+                        $statusCell.html('<span class="badge bg-success">✓ Done</span>');
                         $tableRow.find('td:not(:last-child)').addClass(
-                            'text-decoration-line-through');
+                            'text-decoration-line-through text-black-50');
+                        $tableRow.attr('data-is-done', '1');
                     } else {
-                        $statusCell.html('<span class="text-danger">✗ Incomplete</span>');
+                        $statusButton.removeClass('btn-success').addClass('btn-secondary');
+                        $statusButton.find('i').removeClass('fa-thumbs-up').addClass(
+                            'fa-thumbs-down');
+                        $statusCell.html('<span class="badge bg-danger">✗ Not done</span>');
                         $tableRow.find('td:not(:last-child)').removeClass(
-                            'text-decoration-line-through');
+                            'text-decoration-line-through text-black-50');
+                        $tableRow.attr('data-is-done', '0');
                     }
 
 
@@ -206,7 +231,8 @@
                             });
                         },
                         error: function(error) {
-                            console.error('Error deleting objective: ' + error.statusText);
+                            console.error('Error deleting objective: ' + error
+                                .statusText);
                         }
                     });
                 }

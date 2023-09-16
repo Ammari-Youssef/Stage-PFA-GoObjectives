@@ -50,8 +50,11 @@ Route::middleware(['web','auth'])->group(function () {
 
     Route::resource('/objective', ObjectiveController::class);
     Route::post('/objective/{objective}/toggleStatus', [ObjectiveController::class , 'toggleStatus'])->name('objective.toggleStatus');
-
+    
     Route::resource('/task', TaskController::class);
+    Route::post('/task/{task}/toggleStatus', [TaskController::class , 'toggleStatus'])->name('task.toggleStatus');
+    Route::get('task/tasks-json', [TaskController::class , 'tasksJson'])->name('task.json');
+  
     Route::resource('/motive', MotiveController::class);
     Route::resource('/result', ResultController::class);
 });

@@ -32,6 +32,12 @@
                         {{ __('No current goal available') }}
                     @endif
                 </p>
+                <p class="card-text"><strong>{{ __('Start date :') }}:</strong> {{ $objective->start_date }}</p>
+                <!-- Add a button to go to the editing page (objective.edit) -->
+                <a href="{{ route('objective.edit', ['objective' => $objective->id]) }}"
+                    class="btn btn-primary">{{ __('Edit Objective') }}</a>
+
+                <a href="{{ route('objective.index') }}" class="btn btn-secondary">{{ __('Back to Objectives') }}</a>
                 <hr>
 
                 <h5 class="card-title">{{ __('Additional Details') }}</h5>
@@ -45,7 +51,7 @@
                         <div class="col-6">
                             <!-- Add a "View" button that links to the motive's details page -->
                             <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#motiveDetailsModal" title="View">
+                                data-bs-target="#motiveDetailsModal{{ $motive->id }}" title="View">
                                 <i class="fas fa-eye"></i>
                             </button>
 
@@ -76,8 +82,8 @@
                         {{ __('No motives available') }}
                     </div>
                 @endif
-                 <a class="btn btn-primary"
-                            href="{{ route('motive.create', ['objective_id' => $objective->id]) }}">{{ __('Add Motive') }}</a>
+                <a class="btn btn-primary"
+                    href="{{ route('motive.create', ['objective_id' => $objective->id]) }}">{{ __('Add Motive') }}</a>
                 </p>
 
 
@@ -85,7 +91,7 @@
                     @if ($objective->level)
                         {{ $objective->level }}
                     @else
-                        {{ __('No level available') }}
+                       <div class="alert alert-info " role="info"> {{ __('No level available') }}</div>
                     @endif
                 </p>
 
@@ -116,19 +122,27 @@
                 @endif
 
 
-                <p class="card-text"><strong>{{ __('Tasks') }}: {{$objective->tasks->count()}} </strong></p>
+                <p class="card-text"><strong>{{ __('Tasks') }}: {{ $objective->tasks->count() }} </strong></p>
                 @if ($objective->tasks->count() > 0)
                     <ul>
                         @foreach ($objective->tasks as $task)
-                            <li>{{ $task->name }}</li>
+                            <li>{{ $task->title }}
+                                <button data-toggle="modal" data-target="#taskModal" class="btn  view-task-btn"
+                                    data-task-id="{{ $task->id }}">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+
+                            </li>
                         @endforeach
+                        <x-task.show-task-details />
                     </ul>
                 @else
                     <div class="alert alert-info" role="alert">
                         {{ __('No tasks available') }}
                     </div>
                 @endif
-                <button class="btn btn-primary" id="addTask" >{{ __('Add Task') }}</button>
+                <a class="btn btn-primary" id="addTask"
+                    href="{{ route('task.create', ['objective-id' => $objective->id]) }}">{{ __('Add Task') }}</a>
 
 
 

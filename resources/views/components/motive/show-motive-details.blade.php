@@ -1,5 +1,5 @@
 @props(['motive'])
-<div class="modal fade" id="motiveDetailsModal" tabindex="-1" aria-labelledby="motiveDetailsModalLabel" aria-hidden="true">
+<div class="modal fade" id="motiveDetailsModal{{$motive->id}}" tabindex="-1" aria-labelledby="motiveDetailsModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,7 +9,7 @@
             <div class="modal-body">
                 <!-- Add your motive details here -->
                 <h5 class="card-title">{{ $motive->title }}</h5>
-                <p class="card-text"><strong>{{ __('Motive Type') }}:</strong> {{ $motive->type }}</p>
+                <p class="card-text"><strong>{{ __('Motive Type') }}:</strong> {{ Str::ucfirst($motive->type) }}</p>
                 <p class="card-text"><strong>{{ __('Motive Description') }}:</strong> {{ $motive->description }}</p>
                 <p class="card-text"><strong>{{ __('Created at') }}:</strong> {{ $motive->created_at }}</p>
                 <p class="card-text"><strong>{{ __('Last updated') }}:</strong> {{ $motive->updated_at }}</p>

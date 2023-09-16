@@ -10,6 +10,15 @@
                 </ul>
             </div>
         @endif
+        <div class="alert alert-info">
+            <h4>{{__('Motivation Factors')}}</h4>
+            <p>{{__('You can have various motives to motivate yourself, such as :')}}</p>
+            <ul>
+                <li><strong>{{__('Rewards:')}}</strong> {{__('The promise of a reward, such as recognition, a bonus, or a treat, can be a powerful motivator.')}}</li>
+                <li><strong>Reasons:</strong> {{__('Having a strong reason or purpose, such as achieving a personal goal, can provide motivation.')}}</li>
+                <li><strong>{{__('Penalties:')}}</strong> {{__('Fear of negative consequences or penalties for not taking action can also drive motivation.')}}</li>
+            </ul>
+        </div>
         <h2>{{ __('Create New Motive') }}</h2>
         <form action="{{ route('motive.store') }}" method="POST">
             @csrf

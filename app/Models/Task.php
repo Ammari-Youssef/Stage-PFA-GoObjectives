@@ -10,7 +10,7 @@ class Task extends Model
     use HasFactory;
 
     protected $fillable = [
-        'objective_id','title', 'description', 'date', 
+        'objective_id','title', 'description', 'date','is_done' 
     ];
 
     // Define the relationship with the Objective model

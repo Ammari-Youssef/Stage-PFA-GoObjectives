@@ -42,6 +42,13 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     {{-- Sweet alert --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    {{-- FullCalendar Library --}}
+    <!-- Include FullCalendar CSS and JavaScript from CDN -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.8/index.global.min.js'></script>
+    <!-- Include FullCalendar core CSS and JavaScript -->
 
     <!-- Styles -->
     {{-- <link rel="stylesheet" href="css/template.css"> --}}
