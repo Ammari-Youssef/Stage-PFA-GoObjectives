@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Objective extends Model
 {
@@ -44,7 +45,7 @@ class Objective extends Model
 
     public function levels()
     {
-        return $this->belongsToMany(Level::class, 'level_objective', 'objective_id', 'level_id');
+        return $this->hasMany(Level::class);
     }
 
     public function motive()
@@ -54,6 +55,7 @@ class Objective extends Model
 
     public function results()
     {
+        return $this->HasMany(Result::class);
     }
 
     public function category()

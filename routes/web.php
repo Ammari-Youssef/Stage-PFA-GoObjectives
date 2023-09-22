@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\NavigationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LevelController;
 use App\Http\Controllers\MotiveController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ObjectiveController;
@@ -53,8 +54,11 @@ Route::middleware(['web','auth'])->group(function () {
     
     Route::resource('/task', TaskController::class);
     Route::post('/task/{task}/toggleStatus', [TaskController::class , 'toggleStatus'])->name('task.toggleStatus');
-    Route::get('task/tasks-json', [TaskController::class , 'tasksJson'])->name('task.json');
-  
+    Route::get('/api/tasks', [TaskController::class, 'getTasks'])->name('task.api');
+    Route::get('/task-count', [TaskController::class, 'getTaskCounts'])->name('task.counts');
+    
     Route::resource('/motive', MotiveController::class);
+    Route::resource('/level',  LevelController::class);
+    Route::post('/level/{level}/toggleStatus', [LevelController::class , 'toggleStatus'])->name('level.toggleStatus');
     Route::resource('/result', ResultController::class);
 });

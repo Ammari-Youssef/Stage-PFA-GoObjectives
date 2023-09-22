@@ -28,6 +28,11 @@ class Planning extends Model
     {
         return $this->hasMany(Planning::class);
     }
+    public function planningType()
+    {
+        return $this->belongsTo(PlanningType::class);
+    }
+
 
     
 

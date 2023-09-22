@@ -9,9 +9,13 @@ class Level extends Model
 {
     use HasFactory;
 
-    public function objectives()
+    protected $fillable = [
+        'title', 'description','status', 'objective_id', 'planning_id',
+    ];
+
+    public function objective()
     {
-        return $this->belongsToMany(Objective::class, 'level_objective', 'level_id', 'objective_id');
+        return $this->belongsTo(Objective::class);
     }
 
     public function planning()

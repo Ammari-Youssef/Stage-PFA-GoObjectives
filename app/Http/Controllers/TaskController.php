@@ -9,9 +9,14 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Task;
 use App\Models\Objective;
 use App\Models\Result;
+use Carbon\Carbon;
 
 class TaskController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Task::class, 'task');
+    }
     /**
      * Display a listing of the resource.
      */
@@ -19,32 +24,58 @@ class TaskController extends Controller
     {
         //
         $user = Auth::user();
-
         // Retrieve tasks associated with objectives belonging to the user
         $tasks = Task::whereHas('objective', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
+     $query->where('user_id', $user->id);
         })->get();
-
-
+        $completedTaskCount = $tasks->where('is_done', true)->count();
+        $TaskCount = $tasks->count();
+       
+      
+        dump([$tasks, $completedTaskCount, $TaskCount]);
         $objectives = Objective::where('user_id', auth()->id())->get();
-        return view('task.index', compact('tasks', 'objectives'));
-    }
 
-    public function tasksJson()
+        
+        return view('task.index', compact('tasks', 'objectives', 'completedTaskCount', 'TaskCount'));
+    }
+    public function getTasks()
     {
-        //
-        $user = Auth::user();
+        $tasks = Task::all();
 
-        // Retrieve tasks associated with objectives belonging to the user
-        $tasks = Task::whereHas('objective', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        })->get();
+        $events = [];
 
-dump($tasks);
-        $objectives = Objective::where('user_id', auth()->id())->get();
-        return response()->json($tasks);
+        foreach ($tasks as $task) {
+            $events[] = [
+                'title' => $task->title,
+                'start' => $task->date, 
+                'end' => $task->date,     
+                'backgroundColor' => $task-> is_done ? 'green' :   'red'
+            ];
+        }
+       
+        return response()->json($events);
     }
 
+    public function getTaskCounts(Request $request){
+        $startOfMonth = $request->input('startOfMonth')?? Carbon::now()->startOfMonth();
+        $endOfMonth = $request->input('endOfMonth')??Carbon::now()->endOfMonth();
+
+       
+        $tasks = Task::whereHas('objective', function ($query) use ($startOfMonth, $endOfMonth) {
+            $query->where('user_id', Auth::id());
+        })
+            ->where('date', '>=', $startOfMonth)
+            ->where('date', '<=', $endOfMonth)
+            ->get();
+
+        $completedTaskCount = $tasks->where('is_done', true)->count();
+        $taskCount = $tasks->count();
+
+        return response()->json([
+            'completedTasks' => $completedTaskCount,
+            'totalTasks' => $taskCount
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -118,7 +149,6 @@ dump($tasks);
 
 
         return response()->json(['message' => 'Task updated successfully', 'task' => $task]);
-
     }
 
     /**
@@ -127,7 +157,7 @@ dump($tasks);
     public function destroy(Task $task)
     {
         $task->delete();
-        return redirect()->route('objective.index')->with('success', 'Objective deleted successfully.');
+        return response()->json(['message' => 'Task deleted successfully', 'task_id' => $task->id]);
     }
 
     public function toggleStatus(Task $task)
@@ -143,6 +173,4 @@ dump($tasks);
             return response()->json(['message' => 'Failed to toggle task status']);
         }
     }
-
-    
 }

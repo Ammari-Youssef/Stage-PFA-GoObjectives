@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class recomandedProgressChart extends Component
+class ResultChart extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class recomandedProgressChart extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.recomanded-progress-chart');
+        return view('components.result-chart');
     }
 }

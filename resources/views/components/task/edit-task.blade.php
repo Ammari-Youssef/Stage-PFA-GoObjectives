@@ -82,10 +82,10 @@
     console.log(taskId)
     console.log(formData)
     
-    let title = $('#etask_title').val();
-    let description = $('#edescription').val();
-    let date = $('#edate').val();
-    let objective_id = $('#eobjective_id').val();
+    // let title = $('#etask_title').val();
+    // let description = $('#edescription').val();
+    // let date = $('#edate').val();
+    // let objective_id = $('#eobjective_id').val();
     
     $.ajax({
         url: '/task/' + taskId ,
@@ -103,7 +103,7 @@
             confirmButtonText: 'OK',
         }).then(() => {
             // Refresh the page without reloading
-            location.reload();
+            // location.reload();
         });
 
         // Hide the modal

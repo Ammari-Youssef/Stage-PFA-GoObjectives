@@ -28,8 +28,8 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory(5)->create();
 
         // \App\Models\User::factory()->create([
-        //     'firstname' => 'Youssef',
-        //     'lastname' => 'Ammari',
+        //     'firstname' => 'John',
+        //     'lastname' => 'Doe',
         //     'username' => 'admin',
         //     'email' => 'admin@example.com',
         //     'password' => '12345678',

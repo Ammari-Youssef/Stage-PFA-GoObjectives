@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('results', function (Blueprint $table) {
             $table->id();
             $table->double('number_value')->nullable();
-            $table->time('experience_time_value');
-            $table->boolean('behavior_result');
-            $table->date('result_date');
-            $table->string('comment', 50);
+            $table->time('experience_time_value')->nullable();
+            $table->boolean('behavior_result')->nullable();
+            $table->date('result_date');;
+            $table->string('comment', 255)->nullable();
             $table->timestamps();
             
             $table->unsignedBigInteger('objective_id'); // Foreign key to link with objectives table

@@ -40,7 +40,7 @@
                     console.log(response)
                     // Populate modal with fetched data
                     $('#task_title').text(response.title);
-                    $('#task_description').text(response.description);
+                    $('#task_description').text(response.description ?? "{{__('No description')}}");
                     $('#task_objective_title').text(response.objective.title);
                     $('#task_date').text(response.date);
 

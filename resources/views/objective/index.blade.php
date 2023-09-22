@@ -25,6 +25,7 @@
                             <th data-sortable="true">No.</th>
                             <th data-sortable="true">Title</th>
                             <th data-sortable="true">Category</th>
+                            <th data-sortable="true">Type</th>
                             <th data-sortable="true">Start Date</th>
                             <th data-sortable="true">Deadline</th>
                             <th data-sortable="true">Importance</th>
@@ -34,7 +35,7 @@
                     </thead>
                     <tbody>
                         @foreach ($objectives as $i => $objective)
-                            <tr data-is-done="{{ $objective->is_done ? '1' : '0' }}">
+                            <tr data-is-done="{{ $objective->is_done ? '1' : '0' }}" data-objective-id="{{ $objective->id}}">
                                 <!-- Rest of your existing code for displaying objective details -->
                                 <td
                                     class="{{ $objective->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
@@ -45,6 +46,9 @@
                                 <td
                                     class="{{ $objective->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
                                     {{ $objective->category->name }}</td>
+                                <td
+                                    class="{{ $objective->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
+                                    {{ $objective->type}}</td>
                                 <td
                                     class="{{ $objective->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
                                     {{ $objective->start_date }}</td>
@@ -74,17 +78,20 @@
                                     <a href="{{ route('objective.show', ['objective' => $objective->id]) }}"
                                         class="btn btn-info btn-sm" title="{{ __('View') }}"><i
                                             class="fas fa-eye"></i></a>
-                                    <a href="{{ route('objective.edit', ['objective' => $objective->id]) }}"
-                                        class="btn btn-primary btn-sm" title="{{ __('Edit') }}"><i
-                                            class="fas fa-edit"></i></a>
+                                    @can('update', $objective)
+                                        <a href="{{ route('objective.edit', ['objective' => $objective->id]) }}"
+                                            class="btn btn-primary btn-sm" title="{{ __('Edit') }}">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    @endcan
                                     <form method="POST"
                                         action="{{ route('objective.destroy', ['objective' => $objective->id]) }}"
                                         class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-danger btn-sm delete-objective"
+                                        <button type="submit" class="btn btn-danger btn-sm delete-objective"
                                             title="{{ __('Delete') }}" data-objective-id="{{ $objective->id }}"
-                                            onclick="confirmDelete('{{ route('objective.destroy', ['objective' => $objective->id]) }}')">
+                                           >
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
 
@@ -198,45 +205,43 @@
 
 {{-- Delete Objective --}}
 <script>
-    $(document).ready(function() {
-        $('.delete-objective').click(function() {
-            var objectiveId = $(this).data('objective-id');
+    $('.delete-objective').on('click', function(e) {
+        e.preventDefault();
+        var objectiveId = $(this).data('objective-id');
+        Swal.fire({
+            title: 'Are you sure ?',
+            text: 'You are about to delete this objective. This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Delete',
+            cancelButtonText: 'Cancel',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('objective.destroy', '') }}/' + objectiveId,
 
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'You won\'t be able to revert this!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ route('objective.destroy', '') }}/' + objectiveId,
-
-                        data: {
-                            '_token': '{{ csrf_token() }}',
-                            '_method': 'DELETE'
-                        },
-                        success: function(response) {
-                            Swal.fire({
-                                title: 'Deleted!',
-                                text: 'The objective has been deleted.',
-                                icon: 'success'
-                            }).then(() => {
-                                // You can optionally reload the page or perform any other actions after deletion
-                                window.location.reload();
-                            });
-                        },
-                        error: function(error) {
-                            console.error('Error deleting objective: ' + error
-                                .statusText);
-                        }
-                    });
-                }
-            });
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        '_method': 'DELETE'
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            title: 'Deleted!',
+                            text: 'The objective has been deleted.',
+                            icon: 'success'
+                        }).then(() => {
+                            // You can optionally reload the page or perform any other actions after deletion
+                            $(`tr[data-objective-id="${response.objective_id}"]`).remove();
+                        });
+                    },
+                    error: function(error) {
+                        console.error('Error deleting objective: ' + error.statusText);
+                    }
+                });
+            }
         });
     });
 </script>

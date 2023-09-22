@@ -3,7 +3,16 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+
+use App\Models\Objective;
+use App\Models\Result;
+use App\Models\User;
+use App\Policies\ObjectivePolicy;
+use App\Policies\ProgressPolicy;
+use App\Policies\ResultPolicy;
+use App\Policies\TaskPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -14,6 +23,10 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         //
+        Objective::class => ObjectivePolicy::class,
+        Task::class => TaskPolicy::class,
+        Progress::class => ProgressPolicy::class,
+        Result::class =>ResultPolicy::class,
     ];
 
     /**
@@ -21,6 +34,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+   
     }
 }

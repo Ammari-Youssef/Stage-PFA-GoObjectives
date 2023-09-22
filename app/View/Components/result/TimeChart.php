@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\result;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class recomandedProgressChart extends Component
+class TimeChart extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class recomandedProgressChart extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.recomanded-progress-chart');
+        return view('components.result.time-chart');
     }
 }

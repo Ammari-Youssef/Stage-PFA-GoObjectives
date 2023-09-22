@@ -11,7 +11,7 @@ class Result extends Model
     protected $fillable = [
         'number_value',
         'experience_time_value',
-        'logic_result',
+        'behavior_result',
         'result_date',
         'comment',
         'objective_id', // Assuming you have a foreign key to relate to objectives

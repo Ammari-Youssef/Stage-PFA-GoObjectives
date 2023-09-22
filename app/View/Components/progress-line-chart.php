@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class progress-line-chart extends Component
+class progressLineChart extends Component
 {
     /**
      * Create a new component instance.

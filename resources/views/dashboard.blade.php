@@ -16,8 +16,10 @@
                         <h5 class="card-title">{{ __('Current Objectives') }}</h5>
                         <p class="card-text">{{ __('Keep track of your goals and see your progress.') }}</p>
                         @foreach ($objectives as $index => $objectif)
-                            <p class="card-text"> {{ $index + 1 }} - {{ $objectif->Category->name }} :
-                                {{ $objectif->title }}</p>
+                            @if ($objectif->is_done )
+                                <p class="card-text"> - {{ $objectif->Category->name }} :
+                                    {{ $objectif->title }}</p>
+                            @endif
                         @endforeach
                         {{-- <p class="card-text">{{ __('Health: 40% Progress') }}</p> --}}
                         <!-- ... Repeat for other domains -->
@@ -30,6 +32,15 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ __('Tasks') }}</h5>
                         <p class="card-text">{{ __('Manage your tasks and stay organized.') }}</p>
+                        @if (count($tasks) > 0)
+                            <ul>
+                                @foreach ($tasks as $task)
+                                    <li>{{ $task->title }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="alert alert-info" role=alert>{{ __('No tasks for today.') }}</p>
+                        @endif
                         <a href="{{ route('task.index') }}" class="btn btn-primary">{{ __('View Tasks') }}</a>
                     </div>
                 </div>
@@ -81,17 +92,17 @@
                                         value="{{ $progress->rating }}" max="10" id="{{ $progress->id }}" />
 
                                 </div>
-                               
-                             
                             @endforeach
-                            <a href=" {{ route('progress.edit', $userId) }}"  class="btn btn-primary mt-3">{{ __('ُEdit Progress') }}</a>
+                            <a href=" {{ route('progress.edit', $userId) }}"
+                                class="btn btn-primary mt-3">{{ __('ُEdit Progress') }}</a>
                         @else
                             <p class="alert alert-info" role="alert">{{ __('You currently have no progress data.') }}
                             </p>
-                            <a href="{{ route('progress.create') }}"  class="btn btn-primary">{{ __('Add Progress') }}</a>
+                            <a href="{{ route('progress.create') }}"
+                                class="btn btn-primary">{{ __('Add Progress') }}</a>
                         @endif
 
-                      
+
 
                     </div>
                 </div>
@@ -101,7 +112,7 @@
 
         </div>
 
-       
+
 
         <x-footer />
 </x-master>

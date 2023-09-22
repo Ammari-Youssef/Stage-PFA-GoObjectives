@@ -21,9 +21,13 @@ class DashboardController extends Controller
         $categories= Category::all();
 
         // Fetch data for each model using the user's id
-        // dd(Auth::user());
-        $tasks = Task::where('objective_id', $userId)->get();
-        $objectives = Objective::where('user_id', $userId)->get(); 
+        $user = auth()->user();
+        //tasks of today
+        $tasks = Task::whereDate('date', now()->toDateString())->whereHas('objective', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->get();
+
+        $objectives = Objective::where('user_id', $userId)->orderBy('start_date', 'desc')->get(); 
         $labels = $categories->pluck('name')->toArray();
 
        $colors = array_map(function () {   return '#' . substr(md5(rand()), 0, 6);  }, range(1, count($labels)));
@@ -40,7 +44,7 @@ class DashboardController extends Controller
         // //     // $labels,
         "progress data all :"=>$progressData,
         "progress rating data "=>$progressDataArray,
-        // //     $objectivesData,
+            $objectives,
         ]);
 
         return view('dashboard', compact('labels','tasks', 'progressDataArray','progressData', 'objectives' , 'colors','categories','userId'));

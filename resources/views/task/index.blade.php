@@ -43,10 +43,11 @@
                                     <a data-toggle="modal" data-target="#taskModal"
                                         class="btn btn-info btn-sm view-task-btn" title="{{ __('View') }}"><i
                                             class="fas fa-eye"></i></a>
+
                                     <a class="btn btn-primary btn-sm edit-task-btn" title="{{ __('Edit') }}"><i
                                             class="fas fa-edit"></i></a>
-                                    <form method="POST" {{ route('task.destroy', ['task' => $task->id]) }}"
-                                        class="d-inline" id="deleteTaskForm">
+
+                                    <form method="POST" class="d-inline" id="deleteTaskForm">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm delete-task-btn"
@@ -72,6 +73,16 @@
                 </table>
             </div>
 
+
+            <div class="container mt-4">
+                <h3>Task Progress</h3>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                        style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="progress-label">0%</p>
+            </div>
+
             <div class="mt-5" id="calendar"></div>
             <div id="task-stats">
                 <!-- Add task statistics here -->
@@ -84,6 +95,36 @@
 
 {{-- Toggle completion --}}
 <script>
+    function updateProgressBar(completedTasks, totalTasks) {
+        var percentage = totalTasks != 0 ? (completedTasks / totalTasks) * 100 : 0;
+        var progressBar = document.querySelector('.progress-bar');
+        var progressLabel = document.querySelector('.progress-label');
+
+        progressBar.style.width = percentage + '%';
+        progressBar.setAttribute('aria-valuenow', percentage);
+        progressLabel.textContent = completedTasks + ' tasks done out of ' + totalTasks +
+            ' tasks this month ' +
+            percentage.toFixed(2) + '%';
+        progressBar.textContent = percentage.toFixed(2) + '%';
+        progressLabel.classList.remove('sr-only'); // Show the label
+    }
+    //Perform an AJAX request to your server endpoint to get updated task counts
+    function toggleUpdate() {
+        $.ajax({
+            url: '{{ route('task.counts') }}',
+            type: 'GET',
+
+            success: function(response) {
+                console.log("fetsh res", response)
+                // Update the progress bar with the new percentage
+                updateProgressBar(response.completedTasks, response.totalTasks);
+            },
+            error: function(xhr) {
+                console.error(xhr.responseText);
+            },
+        });
+    }
+
     $(document).ready(function() {
         $('.toggle-status').click(function() {
             var taskId = $(this).data('task');
@@ -99,7 +140,7 @@
                 success: function(response) {
                     // Update the status in the table or perform any other desired actions
                     // You can add logic here to visually update the status in the table
-
+                    //Make a line through all the row 
                     console.log(response);
                     const $statusButton = $('.toggle-status[data-task="' + taskId + '"]');
                     const $statusCell = $('#statusCell_' + taskId);
@@ -112,6 +153,7 @@
                         $statusCell.html('<span class="badge bg-success">✓ Done</span>');
                         $tableRow.find('td:not(:last-child)').addClass(
                             'text-decoration-line-through text-black-50');
+                        toggleUpdate();
                     } else {
                         $statusButton.removeClass('btn-success').addClass('btn-secondary');
                         $statusButton.find('i').removeClass('fa-thumbs-up').addClass(
@@ -119,6 +161,7 @@
                         $statusCell.html('<span class="badge bg-danger">✗ Not done</span>');
                         $tableRow.find('td:not(:last-child)').removeClass(
                             'text-decoration-line-through text-black-50');
+                        toggleUpdate();
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -204,7 +247,8 @@
                             icon: 'success'
                         }).then(() => {
                             // You can optionally reload the page or perform any other actions after deletion
-                            window.location.reload();
+                            $(`tr[data-task-id="${response.task_id}"]`).remove();
+
                         });
                     },
                     error: function(error) {
@@ -217,73 +261,140 @@
 </script>
 
 {{-- Calendar --}}
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const calendarEl = document.getElementById('calendar')
-        const calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth'
-        })
-        calendar.render()
-    })
-</script> --}}
 <script>
+    //Set Calendar with the dates 
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
-            // Add your FullCalendar options here (e.g., initialView, eventClick, etc.)
-         eventRender: function (info) {
-            // Check if the task is completed
-            if (info.event.extendedProps.completed) {
-                var dayNumber = info.el.querySelector('.fc-day-number');
-                var circle = document.createElement('div');
-                circle.className = 'completed-circle';
-                dayNumber.appendChild(circle);
-            }
-        }
-           
+            initialView: 'dayGridMonth', // Display a month view
+            events: {
+                url: '/api/tasks', // Replace with your API endpoint
+                method: 'GET',
+                extraParams: {
+                    // You can include additional parameters if needed
+                },
+                failure: function() {
+                    alert('Failed to load tasks.');
+                }
+            },
+
         });
 
+        // fonction qui mise à jour la barre du progrés 
+        function updateProgressBar(completedTasks, totalTasks) {
+            var percentage = totalTasks != 0 ? (completedTasks / totalTasks) * 100 : 0;
+            var progressBar = document.querySelector('.progress-bar');
+            var progressLabel = document.querySelector('.progress-label');
+
+            progressBar.style.width = percentage + '%';
+            progressBar.setAttribute('aria-valuenow', percentage);
+            progressLabel.textContent = completedTasks + ' tasks done out of ' + totalTasks +
+                ' tasks this month ' +
+                percentage.toFixed(2) + '%';
+            progressBar.textContent = percentage.toFixed(2) + '%';
+            progressLabel.classList.remove('sr-only'); // Show the label
+        }
+        // Function to fetch and update the percentage
+        function fetchAndUpdatePercentage(start, end) {
+            var startOfMonth = new Date(start);
+            var endOfMonth = new Date(end);
+
+            // Convert to ISO 8601 date strings
+            var startOfMonthISO = startOfMonth.toISOString();
+            var endOfMonthISO = endOfMonth.toISOString();
+
+            $.ajax({
+                url: '{{ route('task.counts') }}',
+                type: 'GET',
+                data: {
+                    startOfMonth: startOfMonthISO,
+                    endOfMonth: endOfMonthISO,
+                },
+                success: function(response) {
+                    console.log("fetsh res", response)
+                    // Update the progress bar with the new percentage
+                    updateProgressBar(response.completedTasks, response.totalTasks);
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                },
+            });
+        }
+
+        // Fetch and update the percentage when the calendar initially loads
+        calendar.on('datesSet', function(info) {
+            console.log("on cal info", info)
+            var viewStart = info.view.activeStart;
+            var viewEnd = info.view.activeEnd;
+
+            // Calculate the 1st day of the current month
+            var startOfMonth = new Date(viewStart.getFullYear(), viewStart.getMonth()
+            , 1);
+
+            // Calculate the end of the current month
+            var endOfMonth = new Date(viewEnd.getFullYear(), viewEnd.getMonth(),
+            0); // Day 0 is the last day of the previous month
+            console.log('startOfMonth', startOfMonth)
+            console.log('endOfMonth', endOfMonth)
+            // Fetch and update the percentage for the current month
+            fetchAndUpdatePercentage(startOfMonth, endOfMonth);
+
+        });
+
+        // Fetch and update the percentage whenever the month changes
+        calendar.on('dateClick', function(info) {
+            console.log("month change info", info)
+
+            var month = info.date.getMonth() + 1;
+
+            var viewStart = info.view.activeStart;
+            var viewEnd = info.view.activeEnd;
+
+            // Calculate the 1st day of the current month
+            var startOfMonth = new Date(viewStart.getFullYear(), viewStart.getMonth(), 1);
+
+            // Calculate the end of the current month
+            var endOfMonth = new Date(viewEnd.getFullYear(), viewEnd.getMonth(), 0);
+
+            // Change the calendar's view to the selected month
+            calendar.gotoDate(info.date);
+
+            // Fetch and update the percentage for the selected month
+            fetchAndUpdatePercentage(startOfMonth, endOfMonth);
+        });
         calendar.render(); // Render the calendar
 
-        // Fetch tasks and populate events on the calendar
-        // $.ajax({
-        //     url: '{{ route('task.json') }}', // Use the route for the getTasksJson function
-        //     type: 'GET',
-        //     success: function(response) {
-        //         // Process tasks data and add them as events on the calendar
-        //         // For each task, create an event object and add it to the calendar
-        //         var events = response.map(function(task) {
-        //             return {
-        //                 title: task.title,
-        //                 start: task.date,
-        //                 backgroundColor: task.isDone ? 'green' :
-        //                 'red', // Customize colors based on task completion
-        //             };
-        //         });
 
-        //         calendar.addEventSource(events);
+        // Initial update with the values from the server
+        // var completedTasks = {{ $completedTaskCount }};
+        // var totalTasks = {{ $TaskCount }};
+        // updateProgressBar(completedTasks, totalTasks);
 
-        //         // Add logic to update task statistics here
-        //         updateTaskStatistics(response);
-        //     },
-        //     error: function(xhr) {
-        //         console.error(xhr.responseText);
-        //     },
-        // });
+        // // Set up a setInterval to periodically update the progress
+        // var updateInterval = 3000; // Update every minute (adjust as needed)
+        // setInterval(function() {
 
-        // Function to update task statistics
-        function updateTaskStatistics(tasks) {
-            var totalTasks = tasks.length;
-            var completedTasks = tasks.filter(function(task) {
-                return task.isDone;
-            }).length;
-            var completionPercentage = totalTasks === 0 ? 0 : (completedTasks / totalTasks) * 100;
+        //     // Perform an AJAX request to your server endpoint to get updated task counts
+        //     $.ajax({
+        //         url: '{{ route('task.counts') }}', // Replace with your server endpoint URL
+        //         type: 'GET',
+        //         dataType: 'json', // Assume the response is in JSON format
+        //         success: function(response) {
+        //             // Assuming the server returns an object with 'completedTasks' and 'totalTasks' properties
+        //             console.log(response)
+        //             var completedTasks = response.completedTasks;
+        //             var totalTasks = response.totalTasks;
 
-            $('#task-stats').html(`
-                <p>Total Tasks: ${totalTasks}</p>
-                <p>Completed Tasks: ${completedTasks}</p>
-                <p>Completion Percentage: ${completionPercentage.toFixed(2)}%</p>
-            `);
-        }
+        //             // Update the progress bar with the new counts
+        //             updateProgressBar(completedTasks, totalTasks);
+        //         },
+        //         error: function(xhr) {
+        //             console.error('Failed to fetch updated counts: ' + xhr.responseText);
+        //         }
+        //     });
+
+        // }, updateInterval);
+
+
     });
 </script>

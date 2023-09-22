@@ -15,11 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('title')->default('Default');
             $table->text('description')->default('No description');
-            $table->unsignedBigInteger('planning_id')->nullable(); 
+            $table->boolean('status')->default(false);
+            $table->unsignedBigInteger('planning_id')->nullable();
+            $table->unsignedBigInteger('objective_id')->nullable(); 
+
+            $table->foreign('objective_id')->references('objective')->on('id')->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('planning_id')->references('planning')->on('id')->onDelete('cascade')->onUpdate('cascade');
    
             $table->timestamps();
             
-            $table->foreign('planning_id')->references('planning')->on('id')->onDelete('cascade')->onUpdate('cascade');
 
 
           

@@ -33,15 +33,12 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('objective_parent_id')->nullable();
             $table->unsignedBigInteger('category_id');
-            // $table->unsignedBigInteger('type_id');
             $table->unsignedBigInteger('planning_id');
 
             
             $table->foreign('objective_parent_id')->references('id')->on('objectives')->onDelete('cascade')->cascadeOnUpdate();
             
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
-
-            // $table->foreign('type_id')->references('id')->on('type_objectives')->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->foreign('category_id')->references('id')->on('categories');
 

@@ -14,7 +14,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link{{ request()->is('task') ? ' active' : '' }}"
-                        href="{{ route('task.index') }}">{{ __('Task List') }}</a>
+                        href="{{ route('task.index') }}">{{ __('Tasks') }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link{{ request()->is('objective') ? ' active' : '' }}"
