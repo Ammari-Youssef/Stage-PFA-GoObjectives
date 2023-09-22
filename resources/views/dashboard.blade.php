@@ -16,10 +16,10 @@
                         <h5 class="card-title">{{ __('Current Objectives') }}</h5>
                         <p class="card-text">{{ __('Keep track of your goals and see your progress.') }}</p>
                         @foreach ($objectives as $index => $objectif)
-                            @if ($objectif->is_done )
+                            
                                 <p class="card-text"> - {{ $objectif->Category->name }} :
-                                    {{ $objectif->title }}</p>
-                            @endif
+                                    {{ $objectif->title }} <a href="{{route("objective.show",$objectif->id)}}">{{__("Add result")}}</a></p>
+                        
                         @endforeach
                         {{-- <p class="card-text">{{ __('Health: 40% Progress') }}</p> --}}
                         <!-- ... Repeat for other domains -->
