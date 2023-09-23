@@ -236,9 +236,57 @@
         }
     </script> --}}
 
+    <script>
+       $(document).ready(function() {
+    $('#edit_btn').click(function(e) {
+        e.preventDefault();
+
+        var formData = $('#edit_modal_form').serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: '{{ route('progress.update_single_rating') }}',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    // Display a SweetAlert success message
+                    Swal.fire({
+                        title: 'Success!',
+                        text: response.message,
+                        icon: 'success'
+                    }).then(function() {
+                         $('#editProgressModal').modal('hide');
+                        // Update the displayed value in the percentage-bar component
+                        var progressBar = $('.percentage-bar[data-value="' + response.progress_id + '"]');
+                        progressBar.find('#single-data-bar-'+response.progress_id).css('width', (response.updatedRating / response.max) * 100 + '%');
+                        progressBar.find('#single-data-bar-'+response.progress_id).attr('aria-valuenow', response.updatedRating);
+                        progressBar.find('span').text(response.updatedRating + ' / ' + response.max);
+                    });
+                } else {
+                    // Display a SweetAlert error message
+                    Swal.fire({
+                        title: 'Error!',
+                        text: response.message,
+                        icon: 'error'
+                    });
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                    // Handle the error response and log details
+                    console.error('Error :');
+                    console.error('Status Code: ' + jqXHR.status);
+                    console.error('Status Text: ' + textStatus);
+                    console.error('Error Thrown: ' + errorThrown);
+            }
+        });
+    });
+});
+
+
+    </script>
 
     {{-- data table  --}}
-    <script>
+<script>
     $(document).ready(function() {
         var table = $('#progressTable').DataTable({
             "paging": true, // Enable pagination

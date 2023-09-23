@@ -47,10 +47,10 @@ class ObjectiveController extends Controller
 
         $categories = Category::all();
         $planningTypes = PlanningType::all();
-        dump([
-            "type of plans" => $planningTypes,
-            "parent id " => $objective_parent_id,
-        ]);
+        // dump([
+        //     "type of plans" => $planningTypes,
+        //     "parent id " => $objective_parent_id,
+        // ]);
 
         return view('objective.create', compact('objective', 'objective_parent_id', 'categories', 'planningTypes'));
     }
@@ -240,20 +240,20 @@ class ObjectiveController extends Controller
             )
         );
 
-        dump([
-            'objective level' => $objective->levels,
-            'sub goals' => $subobjectives,
-            'result' => $results,
-            'number data' => $numberData,
-            'time data' => $timeData,
-            'behavior data' => $behavioralData,
-            'labels' => $labels,
-            'average number data' => $averageNumberData, 
-            'average time data' => $averageTimeData,
-            'DidItCount' => $DidItCount,
-            'DidNotDoItCount' => $DidNotDoItCount,
-            'planningdaysCount' => $planningdaysCount,
-        ]);
+        // dump([
+        //     'objective level' => $objective->levels,
+        //     'sub goals' => $subobjectives,
+        //     'result' => $results,
+        //     'number data' => $numberData,
+        //     'time data' => $timeData,
+        //     'behavior data' => $behavioralData,
+        //     'labels' => $labels,
+        //     'average number data' => $averageNumberData, 
+        //     'average time data' => $averageTimeData,
+        //     'DidItCount' => $DidItCount,
+        //     'DidNotDoItCount' => $DidNotDoItCount,
+        //     'planningdaysCount' => $planningdaysCount,
+        // ]);
         return view('objective.show', compact('objective', 'subobjectives', 'results', 'formattedTime', 'numberData', 'timeData', 'behavioralData', 'labels', 'averageNumberData', 'averageTimeData', 'DidItCount','DidNotDoItCount', 'planningdaysCount'));
     }
 
@@ -268,10 +268,10 @@ class ObjectiveController extends Controller
 
         $categories = Category::all();
         $planningTypes = PlanningType::all();
-        dump([
-            "type of plans" => $planningTypes,
-            "parent id " => $objective_parent_id,
-        ]);
+        // dump([
+        //     "type of plans" => $planningTypes,
+        //     "parent id " => $objective_parent_id,
+        // ]);
 
         return view('objective.edit', compact('objective', 'objective_parent_id', 'categories', 'planningTypes'));
     }

@@ -41,15 +41,15 @@ class DashboardController extends Controller
         
         $progressDataArray = $progressData->pluck('rating')->toArray();
         
-        dump([
-            $userId,
-            Auth::check(),
-            auth()->user()->id,
-        // //     // $labels,
-        "progress data all :"=>$progressData,
-        "progress rating data "=>$progressDataArray,
-            $objectives,
-        ]);
+        // dump([
+        //     $userId,
+        //     Auth::check(),
+        //     auth()->user()->id,
+        // // //     // $labels,
+        // "progress data all :"=>$progressData,
+        // "progress rating data "=>$progressDataArray,
+        //     $objectives,
+        // ]);
 
         return view('dashboard', compact('labels','tasks', 'progressDataArray','progressData', 'objectives' , 'colors','categories','userId'));
   

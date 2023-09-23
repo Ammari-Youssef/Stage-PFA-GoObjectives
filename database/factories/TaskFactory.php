@@ -56,7 +56,7 @@ class TaskFactory extends Factory
             'description' => $this->faker->paragraph,
             'date' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             'is_done' => $this->faker->boolean,
-            'objective_id' => Objective::factory()->create()->id ,
+            'objective_id' => Objective::factory()->create()->id , //Create objective then link it to task 
             // 'created_at' => Carbon::now(),
             // 'updated_at' => Carbon::now(),
         ];

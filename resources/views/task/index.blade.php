@@ -199,7 +199,7 @@
             },
             "columnDefs": [{
                 "targets": [0], // Target the first column
-                "visible": true, // Hide the first column
+                "visible": false, // Hide the first column
             }],
             "dom": 'lBfrtip', // Control the placement of components
             "buttons": [ // DataTables Buttons extension

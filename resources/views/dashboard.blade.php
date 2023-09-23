@@ -16,13 +16,12 @@
                         <h5 class="card-title">{{ __('Current Objectives') }}</h5>
                         <p class="card-text">{{ __('Keep track of your goals and see your progress.') }}</p>
                         @foreach ($objectives as $index => $objectif)
-                            
+                            @if($index<3)
                                 <p class="card-text"> - {{ $objectif->Category->name }} :
-                                    {{ $objectif->title }} <a href="{{route("objective.show",$objectif->id)}}">{{__("Add result")}}</a></p>
-                        
+                                    {{ $objectif->title }} <a class="btn btn-info btn-sm" href="{{route("objective.show",$objectif->id)}}" title="See details and Add Results"><i class="fa-solid fa-square-poll-vertical"></i></a></p>
+                        @endif
                         @endforeach
-                        {{-- <p class="card-text">{{ __('Health: 40% Progress') }}</p> --}}
-                        <!-- ... Repeat for other domains -->
+                      
                         <a href="{{ route('objective.index') }}" class="btn btn-primary">{{ __('View Objectives') }}</a>
                     </div>
                 </div>

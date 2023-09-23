@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Progress\StoreProgressRequest;
 use App\Models\Progress;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
-use App\Http\Requests\StoreProgressRequest;
 use App\Models\Category;
 
 
@@ -33,14 +33,14 @@ class ProgressController extends Controller
 
         $summaryStatistics = $this->calculateSummaryStatistics($progressRecords);
         $userInsights = $this->generateUserInsights($progressRecords);
-        dump([
-            // $progress,
-            //     $progressDataArray,
-            "progress records" => $progressRecords->count(),
-            "values" => $values,
-            "lable" =>  $labels,
-            "static"=> $summaryStatistics
-        ]);
+        // dump([
+        //     // $progress,
+        //     //     $progressDataArray,
+        //     "progress records" => $progressRecords->count(),
+        //     "values" => $values,
+        //     "lable" =>  $labels,
+        //     "static"=> $summaryStatistics
+        // ]);
 
         return view('progress.index', compact('labels', 'values', 'progressRecords', 'colors', 'userId', 'summaryStatistics', 'userInsights'));
 
@@ -130,11 +130,11 @@ class ProgressController extends Controller
         $categories = Category::all();
         $UserProgressData = Progress::where('user_id', $userId)->get();
 
-        dump([
-            // $UserProgressData, 
-            'userprogress' => $user_progress,
-            $progressID
-        ]);
+        // dump([
+        //     // $UserProgressData, 
+        //     'userprogress' => $user_progress,
+        //     $progressID
+        // ]);
         return view('progress.edit', compact('categories', 'UserProgressData', 'progressID', 'userId'));
     }
 
@@ -174,18 +174,18 @@ class ProgressController extends Controller
     public function update_single_rating(Request $request)
     {
         // Validate the incoming data
-        $request->validate([
-            'rating' => 'required|numeric|min:0|max:10',
-        ]);
+        // $request->validate([
+        //     'rating' => 'required|numeric|min:0|max:10',
+        // ]);
 
-        // Retrieve the progress record to update
-        $progress = Progress::find($request->input('progress_id'));
-        // Update the progress record
-        $progress->rating = $request->input('rating');
-        $progress->save();
+        // // Retrieve the progress record to update
+        // $progress = Progress::find($request->input('progress_id'));
+        // // Update the progress record
+        // $progress->rating = $request->input('rating');
+        // $progress->save();
 
-        $userId = Auth::id();
-        $progressRecords = Progress::where('user_id', $userId)->paginate(10);
+        // $userId = Auth::id();
+        // $progressRecords = Progress::where('user_id', $userId)->paginate(10);
 
         // $output = '';
         // foreach ($progressRecords as $progress) {
@@ -219,7 +219,32 @@ class ProgressController extends Controller
 
         // return response()->json(['data' => $data]);
 
-        return redirect()->route('progress.index')->with('success', $progress->category->name . " rating has been updated");
+
+
+        $request->validate([
+            'rating' => 'required|numeric|min:0|max:10',
+            'progress_id' => 'required|exists:progress,id', // Add validation for progress_id
+        ]);
+
+        $progress = Progress::find($request->input('progress_id'));
+
+        if (!$progress) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Progress record not found.',
+            ]);
+        }
+
+        $progress->rating = $request->input('rating');
+        $progress->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => $progress->category->name . " rating has been updated",
+            'updatedRating' => $progress->rating, // Send the updated rating
+            'progress_id' =>  $progress->id, // Send the escaped input name
+            'max' =>  10, // Send the escaped input name
+        ]);
     }
 
     /**

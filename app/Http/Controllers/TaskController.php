@@ -32,7 +32,8 @@ class TaskController extends Controller
         $TaskCount = $tasks->count();
        
       
-        dump([$tasks, $completedTaskCount, $TaskCount]);
+        // dump([$tasks, $completedTaskCount, $TaskCount]);
+        
         $objectives = Objective::where('user_id', auth()->id())->get();
 
         
