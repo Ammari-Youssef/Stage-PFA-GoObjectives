@@ -42,14 +42,14 @@
                 <hr>
 
                 <h5 class="card-title">{{ __('Additional Details') }}</h5>
-                <p class="card-text"><strong>{{ __('Motives') }}: {{ $objective->motive->count() }}</strong> </p>
+                <p class="card-text "><strong>{{ __('Motives') }}: {{ $objective->motive->count() }}</strong> </p>
                 @if ($objective->motive->count() > 0)
                     @foreach ($objective->motive as $motive)
                         <!-- Display motive details -->
-                    <div data-motive-id="{{ $motive->id }}">
+                    <div data-motive-id="{{ $motive->id }}" class="p-2">
                         <div class="col-6">{{ $motive->title }} ({{ Str::ucfirst($motive->type) }})</div>
 
-                        <div class="col-6">
+                        <div class="col-6 p-1">
                             <!-- Add a "View" button that links to the motive's details page -->
                             <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#motiveDetailsModal{{ $motive->id }}" title="View">
@@ -83,7 +83,7 @@
                         {{ __('No motives available') }}
                     </div>
                 @endif
-                <a class="btn btn-primary"
+                <a class="btn btn-primary mt-2"
                     href="{{ route('motive.create', ['objective_id' => $objective->id]) }}">{{ __('Add Motive') }}</a>
                 </p>
 

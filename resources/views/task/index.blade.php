@@ -28,10 +28,14 @@
                     <tbody>
                         @foreach ($tasks as $i => $task)
                             <tr data-task-id="{{ $task->id }}">
-                                <td>{{ $i + 1 }}</td>
-                                <td>{{ $task->title }}</td>
-                                <td>{{ $task->objective->title }}</td>
-                                <td>{{ $task->date }}</td>
+                                <td class="{{ $task->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
+                                    {{ $i + 1 }}</td>
+                                <td class="{{ $task->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
+                                    {{ $task->title }}</td>
+                                <td class="{{ $task->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
+                                    {{ $task->objective->title }}</td>
+                                <td class="{{ $task->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
+                                    {{ $task->date }}</td>
                                 <td id="statusCell_{{ $task->id }}">
                                     @if ($task->is_done)
                                         <span class="badge bg-success">{{ __('✓ Done') }}</span>
@@ -328,12 +332,11 @@
             var viewEnd = info.view.activeEnd;
 
             // Calculate the 1st day of the current month
-            var startOfMonth = new Date(viewStart.getFullYear(), viewStart.getMonth()
-            , 1);
+            var startOfMonth = new Date(viewStart.getFullYear(), viewStart.getMonth(), 1);
 
             // Calculate the end of the current month
             var endOfMonth = new Date(viewEnd.getFullYear(), viewEnd.getMonth(),
-            0); // Day 0 is the last day of the previous month
+                0); // Day 0 is the last day of the previous month
             console.log('startOfMonth', startOfMonth)
             console.log('endOfMonth', endOfMonth)
             // Fetch and update the percentage for the current month

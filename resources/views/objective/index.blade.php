@@ -35,7 +35,8 @@
                     </thead>
                     <tbody>
                         @foreach ($objectives as $i => $objective)
-                            <tr data-is-done="{{ $objective->is_done ? '1' : '0' }}" data-objective-id="{{ $objective->id}}">
+                            <tr data-is-done="{{ $objective->is_done ? '1' : '0' }}"
+                                data-objective-id="{{ $objective->id }}">
                                 <!-- Rest of your existing code for displaying objective details -->
                                 <td
                                     class="{{ $objective->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
@@ -48,7 +49,7 @@
                                     {{ $objective->category->name }}</td>
                                 <td
                                     class="{{ $objective->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
-                                    {{ $objective->type}}</td>
+                                    {{ $objective->type }}</td>
                                 <td
                                     class="{{ $objective->is_done ? 'text-decoration-line-through text-black-50' : '' }}">
                                     {{ $objective->start_date }}</td>
@@ -90,8 +91,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm delete-objective"
-                                            title="{{ __('Delete') }}" data-objective-id="{{ $objective->id }}"
-                                           >
+                                            title="{{ __('Delete') }}" data-objective-id="{{ $objective->id }}">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
 
@@ -234,7 +234,8 @@
                             icon: 'success'
                         }).then(() => {
                             // You can optionally reload the page or perform any other actions after deletion
-                            $(`tr[data-objective-id="${response.objective_id}"]`).remove();
+                            $(`tr[data-objective-id="${response.objective_id}"]`)
+                                .remove();
                         });
                     },
                     error: function(error) {

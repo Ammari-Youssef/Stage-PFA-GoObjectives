@@ -41,6 +41,8 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 -   **Blade**: A templating engine for Laravel.
 -   **Bootstrap**: A popular CSS framework for building responsive and visually appealing web interfaces.
 -   **Chart.js**: A JavaScript library for creating interactive and visually appealing charts.
+- **FullCalendar.js**: A JavaScript library for creating interactive and customizable calendars in your web application.
+
 
 ### Server-side
 
@@ -123,24 +125,27 @@ Before you begin, ensure you have met the following requirements:
 
 ## Screenshots
 
-Here are some screenshots of GoObjective to give you a glimpse of the application:
+Here are some screenshots of GoObjectives to give you a glimpse of the application:
 
 **Dashboard:**
 
-![Dashboard](/path/to/screenshot1.png)
-*Description of the dashboard screen.*
+![Dashboard](Screenshots\Dashboard.jpeg)
+*This is the dashboard of the GoObjective application. It provides an overview of your goals and tasks, allowing you to see your progress at a glance.*
 
 **Goal Management:**
 
-![Goal Management](/path/to/screenshot2.png)
-*Description of the goal management screen.*
+![Goal Management](Screenshots\objectives.jpeg)
+*In the goal management section, you can create, update, and delete your objectives. This is where you set your goals and define what you want to achieve.*
 
 **Task Tracking:**
 
-![Task Tracking](/path/to/screenshot3.png)
-*Description of the task tracking screen.*
+![Task Tracking](Screenshots\Tasks.jpeg)
+*The task tracking screen allows you to manage and track the tasks associated with your objectives. You can mark tasks as complete and monitor your progress. Additionally, you can view your tasks for the month, providing a comprehensive view of your upcoming tasks and deadlines.*
 
-**Productivity Dashboard:**
+**Productivity Goal Tracking :**
 
-![Productivity Dashboard](/path/to/screenshot4.png)
-*Description of the productivity dashboard screen.*
+![Productivity Objective Tracking](Screenshots\Objective-details.jpeg)
+*The productivity objective tracking section provides detailed insights into your objectives. You can see charts and statistics that visualize your progress and help you stay on track.*
+
+![Monitor your prgress](Screenshots\progress.jpeg)
+*You can assess and rate your progress in each of the nine categories. This feature allows you to evaluate your achievements in various aspects of your goals, helping you to focus on areas that may require more attention and improvement.*
