@@ -129,23 +129,23 @@ Here are some screenshots of GoObjectives to give you a glimpse of the applicati
 
 **Dashboard:**
 
-![Dashboard](screenshots\Dashboard.jpeg)
+![Dashboard](screenshots/Dashboard.jpeg)
 *This is the dashboard of the GoObjective application. It provides an overview of your goals and tasks, allowing you to see your progress at a glance.*
 
 **Goal Management:**
 
-![Goal Management](screenshots\objectives.jpeg)
+![Goal Management](screenshots/objectives.jpeg)
 *In the goal management section, you can create, update, and delete your objectives. This is where you set your goals and define what you want to achieve.*
 
 **Task Tracking:**
 
-![Task Tracking](screenshots\Tasks.jpeg)
+![Task Tracking](screenshots/Tasks.jpeg)
 *The task tracking screen allows you to manage and track the tasks associated with your objectives. You can mark tasks as complete and monitor your progress. Additionally, you can view your tasks for the month, providing a comprehensive view of your upcoming tasks and deadlines.*
 
 **Productivity Goal Tracking :**
 
-![Productivity Objective Tracking](screenshots\Objective-details.jpeg)
+![Productivity Objective Tracking](screenshots/Objective-details.jpeg)
 *The productivity objective tracking section provides detailed insights into your objectives. You can see charts and statistics that visualize your progress and help you stay on track.*
 
-![Monitor your prgress](screenshots\progress.jpeg)
+![Monitor your prgress](screenshots/progress.jpeg)
 *You can assess and rate your progress in each of the nine categories. This feature allows you to evaluate your achievements in various aspects of your goals, helping you to focus on areas that may require more attention and improvement.*
